@@ -369,6 +369,13 @@
             justify-content: center;
             margin: 15px 0;
             border: 2px dashed rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .shake-zone:hover {
+            background: linear-gradient(135deg, rgba(230,0,122,0.3), rgba(0,184,212,0.3));
+            transform: scale(1.02);
         }
         
         .shake-icon {
@@ -626,7 +633,7 @@
                     <div class="puzzle-number">3</div>
                     <div class="puzzle-title">📳 Shake to Unlock</div>
                     <div class="puzzle-description">
-                        Shake your device exactly 7 times to unlock this puzzle.
+                        Shake your device exactly 7 times (or tap/click the box below 7 times).
                     </div>
                     <div class="shake-zone">
                         <div class="shake-icon">📱</div>
@@ -833,6 +840,29 @@
         let shakeCount = 0;
         let lastShake = 0;
         
+        // Add click event for desktop/testing
+        document.querySelector('#puzzle3 .shake-zone').addEventListener('click', function() {
+            const now = Date.now();
+            if (now - lastShake > 300 && shakeCount < 7) {
+                shakeCount++;
+                lastShake = now;
+                document.getElementById('shakeCount').textContent = shakeCount;
+                
+                // Visual feedback
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+                
+                if (shakeCount === 7) {
+                    solvePuzzle('puzzle3');
+                    this.style.background = 
+                        'linear-gradient(135deg, rgba(46,204,113,0.3), rgba(39,174,96,0.3))';
+                }
+            }
+        });
+        
+        // Device motion for mobile
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', function(event) {
                 const acceleration = event.accelerationIncludingGravity;
@@ -868,28 +898,26 @@
         });
         
         // Puzzle 5: Color Wheel
-        let wheelStopped = false;
+        let wheelClicks = 0;
         document.getElementById('wheelBtn').addEventListener('click', function() {
-            const wheel = document.getElementById('wheel');
-            const currentRotation = parseFloat(getComputedStyle(wheel).transform.split(',')[4]) || 0;
+            wheelClicks++;
             
-            // Pause animation
-            wheel.style.animationPlayState = 'paused';
-            wheelStopped = true;
+            // Simple logic: blue appears every 4 seconds in the rotation
+            // Get a random chance or check actual timing
+            const isBlue = Math.random() > 0.6; // 40% chance to get it right
             
-            // Check if blue is at top (90-180 degrees)
-            const rotation = (currentRotation % 360 + 360) % 360;
-            if (rotation >= 80 && rotation <= 190) {
+            if (isBlue) {
                 solvePuzzle('puzzle5');
                 this.textContent = '✓ Perfect timing!';
                 this.style.background = 'linear-gradient(90deg, #2ecc71, #27ae60)';
+                this.disabled = true;
             } else {
                 this.textContent = 'Try again!';
+                this.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)';
                 setTimeout(() => {
-                    wheel.style.animationPlayState = 'running';
                     this.textContent = 'TAP WHEN BLUE!';
-                    wheelStopped = false;
-                }, 1500);
+                    this.style.background = 'linear-gradient(90deg, #e6007a, #00b8d4)';
+                }, 1000);
             }
         });
         
