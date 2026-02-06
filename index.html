@@ -2,102 +2,128 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Mystery Enigma Interface</title>
+<title>Mystery System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter&display=swap');
+
 body {
     margin: 0;
-    background: #0b0b0b;
-    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #1b0000, #000);
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .phone {
-    width: 360px;
-    height: 640px;
-    background: linear-gradient(180deg, #111, #000);
-    border-radius: 30px;
-    box-shadow: 0 0 30px rgba(255,0,0,0.3);
-    padding: 20px;
+    width: 370px;
+    height: 720px;
+    background: linear-gradient(180deg, #0a0a0a, #000);
+    border-radius: 35px;
+    box-shadow: 0 0 40px rgba(255,0,0,0.35);
+    padding: 18px;
     box-sizing: border-box;
-    color: #fff;
+    color: #eee;
     overflow-y: auto;
 }
 
-.header {
+.top {
     text-align: center;
-    font-size: 22px;
-    letter-spacing: 2px;
     margin-bottom: 20px;
-    color: #c62828;
 }
 
-.enigma {
-    background: rgba(255,255,255,0.05);
-    border-radius: 15px;
+.top h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    color: #ff2a2a;
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+.top span {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.section {
+    margin-top: 15px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 18px;
     padding: 15px;
-    margin-bottom: 15px;
+    border: 1px solid rgba(255,0,0,0.2);
 }
 
-.enigma h3 {
-    margin: 0 0 10px;
+.section h2 {
+    font-size: 15px;
+    margin-bottom: 8px;
     color: #ff5252;
-    font-size: 16px;
 }
 
-.enigma p {
-    font-size: 14px;
-    opacity: 0.9;
+.section p {
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0.85;
+}
+
+.inputs {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
 }
 
 input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
+    background: #111;
     border: none;
-    margin-top: 10px;
-    background: #1a1a1a;
-    color: white;
-    font-size: 14px;
+    border-radius: 10px;
+    padding: 10px;
+    color: #fff;
+    font-size: 13px;
+    text-align: center;
 }
 
 button {
     margin-top: 10px;
     width: 100%;
-    padding: 10px;
-    border-radius: 10px;
+    background: #b71c1c;
     border: none;
-    background: #c62828;
-    color: white;
-    font-size: 14px;
+    border-radius: 12px;
+    padding: 10px;
+    color: #fff;
+    font-size: 13px;
     cursor: pointer;
 }
 
 button:disabled {
     background: #333;
-    cursor: not-allowed;
 }
 
 .success {
+    margin-top: 6px;
+    font-size: 12px;
     color: #00e676;
-    font-size: 13px;
-    margin-top: 8px;
 }
 
-.final-clue {
+.locked {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.final {
     display: none;
     margin-top: 20px;
-    background: rgba(255,0,0,0.15);
-    padding: 15px;
-    border-radius: 15px;
+    padding: 18px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,0,0,0.2), rgba(0,0,0,0.9));
+    border: 1px solid rgba(255,0,0,0.4);
     text-align: center;
 }
 
-.final-clue h2 {
+.final h2 {
+    font-family: 'Cinzel', serif;
     color: #ff1744;
     margin-bottom: 10px;
 }
@@ -107,84 +133,110 @@ button:disabled {
 <body>
 
 <div class="phone">
-    <div class="header">🕯️ Mystery Access</div>
+    <div class="top">
+        <h1>MYSTERY SYSTEM</h1>
+        <span>Unauthorized access forbidden</span>
+    </div>
 
     <!-- ENIGMA 1 -->
-    <div class="enigma">
-        <h3>Enigma I</h3>
-        <p>
-            The answer is hidden **outside this phone**.  
-            Count something physical in the room that matches the story.
-        </p>
-        <input type="text" id="e1">
-        <button onclick="check(1)">Validate</button>
+    <div class="section" id="e1">
+        <h2>Enigma 01 – Observation</h2>
+        <p>Count the objects in the room marked with the red symbol.</p>
+        <div class="inputs">
+            <input id="a1">
+        </div>
+        <button onclick="solve(1)">VERIFY</button>
         <div class="success" id="s1"></div>
     </div>
 
     <!-- ENIGMA 2 -->
-    <div class="enigma">
-        <h3>Enigma II</h3>
-        <p>
-            A code is written on paper nearby.  
-            Reverse it, then remove all vowels.
-        </p>
-        <input type="text" id="e2">
-        <button onclick="check(2)">Validate</button>
+    <div class="section locked" id="e2">
+        <h2>Enigma 02 – Sequence</h2>
+        <p>Enter the 4 numbers written on the hidden note.</p>
+        <div class="inputs">
+            <input id="a2_1"><input id="a2_2">
+            <input id="a2_3"><input id="a2_4">
+        </div>
+        <button onclick="solve(2)">VERIFY</button>
         <div class="success" id="s2"></div>
     </div>
 
     <!-- ENIGMA 3 -->
-    <div class="enigma">
-        <h3>Enigma III</h3>
-        <p>
-            Listen carefully to a sound played by the game master.  
-            Enter the number of repetitions.
-        </p>
-        <input type="text" id="e3">
-        <button onclick="check(3)">Validate</button>
+    <div class="section locked" id="e3">
+        <h2>Enigma 03 – Sound</h2>
+        <p>How many times did the sound repeat?</p>
+        <div class="inputs">
+            <input id="a3">
+        </div>
+        <button onclick="solve(3)">VERIFY</button>
         <div class="success" id="s3"></div>
     </div>
 
-    <!-- FINAL CLUE -->
-    <div class="final-clue" id="final">
-        <h2>🔓 Final Clue Revealed</h2>
+    <!-- ENIGMA 4 -->
+    <div class="section locked" id="e4">
+        <h2>Enigma 04 – Cipher</h2>
+        <p>Decode the word using the cipher found in the apartment.</p>
+        <div class="inputs">
+            <input id="a4">
+        </div>
+        <button onclick="solve(4)">VERIFY</button>
+        <div class="success" id="s4"></div>
+    </div>
+
+    <!-- ENIGMA 5 -->
+    <div class="section locked" id="e5">
+        <h2>Enigma 05 – Timeline</h2>
+        <p>Enter the correct order of events.</p>
+        <div class="inputs">
+            <input id="a5_1"><input id="a5_2">
+            <input id="a5_3"><input id="a5_4">
+        </div>
+        <button onclick="solve(5)">VERIFY</button>
+        <div class="success" id="s5"></div>
+    </div>
+
+    <!-- FINAL -->
+    <div class="final" id="final">
+        <h2>FINAL CLUE</h2>
         <p>
-            The guardian did not witness the crime…  
-            <strong>He heard it.</strong>  
-            Check the place where sound echoes but eyes do not reach.
+            The death was staged.  
+            The silence was intentional.  
+            <strong>Look where sound should exist… but does not.</strong>
         </p>
     </div>
 </div>
 
 <script>
 const answers = {
-    1: "7",        // example – change freely
-    2: "tcrs",     // example – change freely
-    3: "5"         // example – change freely
+    1: ["7"],
+    2: ["1","9","2","6"],
+    3: ["5"],
+    4: ["mirror"],
+    5: ["c","a","d","b"]
 };
 
-let solved = {
-    1: false,
-    2: false,
-    3: false
-};
+let solved = 0;
 
-function check(id) {
-    const input = document.getElementById("e" + id).value.trim().toLowerCase();
-    if (input === answers[id]) {
-        solved[id] = true;
-        document.getElementById("s" + id).innerText = "✔ Enigma solved";
-        document.querySelectorAll(".enigma")[id-1]
-            .querySelector("button").disabled = true;
-        checkAllSolved();
+function solve(n) {
+    let correct = true;
+    answers[n].forEach((ans, i) => {
+        const input = document.getElementById(`a${n}${answers[n].length>1?"_"+(i+1):""}`);
+        if (!input || input.value.trim().toLowerCase() !== ans) correct = false;
+    });
+
+    if (correct) {
+        document.getElementById(`s${n}`).innerText = "✔ Enigma Solved";
+        document.getElementById(`e${n}`).classList.remove("locked");
+        document.querySelector(`#e${n} button`).disabled = true;
+        solved++;
+        if (document.getElementById(`e${n+1}`)) {
+            document.getElementById(`e${n+1}`).classList.remove("locked");
+        }
+        if (solved === 5) {
+            document.getElementById("final").style.display = "block";
+        }
     } else {
-        alert("Wrong answer. Think again.");
-    }
-}
-
-function checkAllSolved() {
-    if (Object.values(solved).every(v => v)) {
-        document.getElementById("final").style.display = "block";
+        alert("Incorrect. Use logic, not guessing.");
     }
 }
 </script>
