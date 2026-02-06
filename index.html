@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport name="width=device-width, initial-scale=1.0">
-    <title>Human Enigma Challenge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigma Phone - Mystery Puzzles</title>
     <style>
         * {
             margin: 0;
@@ -13,279 +13,435 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow: hidden;
+        }
+        
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
         
         .phone {
             width: 375px;
-            height: 667px;
+            height: 812px;
             background: #000;
-            border-radius: 40px;
-            padding: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
             position: relative;
+            z-index: 10;
         }
         
-        .notch {
-            width: 150px;
-            height: 25px;
-            background: #000;
+        .phone::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
+            width: 180px;
+            height: 30px;
+            background: #000;
             border-radius: 0 0 20px 20px;
-            z-index: 10;
+            z-index: 20;
         }
         
         .screen {
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
-            border-radius: 30px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f3460 100%);
+            border-radius: 40px;
             overflow-y: auto;
+            overflow-x: hidden;
             position: relative;
         }
         
+        .screen::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .screen::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+        
         .status-bar {
-            height: 44px;
+            height: 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             padding-top: 10px;
-        }
-        
-        .time {
-            font-weight: 600;
-        }
-        
-        .battery {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .content {
-            padding: 20px;
-            color: #fff;
         }
         
         .header {
             text-align: center;
-            margin-bottom: 30px;
             padding: 20px;
-            background: linear-gradient(135deg, rgba(142,45,226,0.1) 0%, rgba(74,0,224,0.1) 100%);
-            border-radius: 20px;
-            border: 1px solid rgba(142,45,226,0.3);
+            background: linear-gradient(135deg, rgba(230,0,122,0.2), rgba(0,184,212,0.2));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
         .header h1 {
-            font-size: 26px;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
+            font-size: 28px;
+            background: linear-gradient(90deg, #e6007a, #00b8d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            margin-bottom: 5px;
+            animation: glow 2s ease-in-out infinite;
         }
         
-        .header p {
-            font-size: 13px;
-            color: #888;
-            font-style: italic;
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
         }
         
-        .enigma-container {
-            background: rgba(255,255,255,0.03);
+        .level-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .level-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s;
+        }
+        
+        .level-dot.active {
+            background: #00b8d4;
+            box-shadow: 0 0 10px #00b8d4;
+            transform: scale(1.3);
+        }
+        
+        .puzzle-container {
+            padding: 20px;
+        }
+        
+        .puzzle-card {
+            background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
             padding: 25px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
         }
         
-        .enigma-container.solved {
-            border-color: rgba(46,213,115,0.5);
-            background: rgba(46,213,115,0.05);
+        .puzzle-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            animation: shine 3s infinite;
         }
         
-        .enigma-number {
-            display: inline-block;
-            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
-            color: #fff;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .puzzle-card.solved {
+            border-color: rgba(0,255,0,0.3);
+            background: rgba(0,255,0,0.05);
+        }
+        
+        .puzzle-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e6007a, #00b8d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 700;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
+            font-size: 16px;
+            color: #fff;
+            animation: pulse 2s infinite;
         }
         
-        .enigma-title {
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .puzzle-title {
             font-size: 18px;
             font-weight: 600;
+            color: #00b8d4;
             margin-bottom: 15px;
-            color: #fff;
+            padding-right: 50px;
         }
         
-        .enigma-text {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #bbb;
+        .puzzle-description {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.6;
             margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
+        }
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .color-box {
+            aspect-ratio: 1;
             border-radius: 10px;
-            border-left: 3px solid #8e2de2;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .hint-box {
-            background: rgba(255,193,7,0.1);
-            border: 1px solid rgba(255,193,7,0.3);
-            border-radius: 10px;
-            padding: 12px;
-            margin: 15px 0;
-            font-size: 12px;
-            color: #ffc107;
-        }
-        
-        .hint-box::before {
-            content: "💡 HINT: ";
-            font-weight: 700;
-        }
-        
-        .input-group {
-            margin-top: 20px;
-        }
-        
-        .input-label {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .input-wrapper {
+            cursor: pointer;
+            transition: all 0.3s;
             position: relative;
         }
         
-        .enigma-input {
+        .color-box:active {
+            transform: scale(0.9);
+        }
+        
+        .color-box.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: white;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .pattern-canvas {
+            width: 100%;
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .moving-dot {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #e6007a;
+            box-shadow: 0 0 15px #e6007a;
+            animation: moveDot 4s linear infinite;
+        }
+        
+        @keyframes moveDot {
+            0% { top: 10%; left: 10%; }
+            25% { top: 10%; left: 80%; }
+            50% { top: 80%; left: 80%; }
+            75% { top: 80%; left: 10%; }
+            100% { top: 10%; left: 10%; }
+        }
+        
+        .input-box {
             width: 100%;
             padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .input-box:focus {
+            border-color: #00b8d4;
+            box-shadow: 0 0 15px rgba(0,184,212,0.3);
+        }
+        
+        .input-box::placeholder {
+            color: #666;
+        }
+        
+        .slider-container {
+            margin: 20px 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e6007a, #00b8d4);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(230,0,122,0.5);
+        }
+        
+        .slider-value {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #00b8d4;
+            margin-top: 10px;
+        }
+        
+        .tap-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .tap-btn {
+            padding: 20px;
             background: rgba(255,255,255,0.05);
             border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
+            border-radius: 15px;
             color: #fff;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tap-btn:active {
+            transform: scale(0.95);
+            background: rgba(230,0,122,0.3);
+        }
+        
+        .sequence-display {
             text-align: center;
-            font-weight: 600;
-            letter-spacing: 2px;
-        }
-        
-        .enigma-input:focus {
-            border-color: #8e2de2;
-            background: rgba(142,45,226,0.1);
-        }
-        
-        .enigma-input.correct {
-            border-color: #2ed573;
-            background: rgba(46,213,115,0.1);
-        }
-        
-        .enigma-input::placeholder {
-            color: #555;
-            letter-spacing: normal;
-        }
-        
-        .status-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            display: none;
-        }
-        
-        .status-icon.show {
-            display: block;
-        }
-        
-        .password-section {
-            margin-top: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, rgba(255,71,87,0.1) 0%, rgba(255,107,107,0.1) 100%);
-            border: 2px solid rgba(255,71,87,0.3);
-            border-radius: 20px;
-        }
-        
-        .password-title {
-            text-align: center;
-            font-size: 16px;
-            color: #ff6b6b;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 32px;
             font-weight: 700;
+            color: #e6007a;
+            margin: 20px 0;
+            min-height: 50px;
+            letter-spacing: 5px;
         }
         
-        .password-hint {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 20px;
+        .shake-zone {
+            height: 150px;
+            background: linear-gradient(135deg, rgba(230,0,122,0.2), rgba(0,184,212,0.2));
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            border: 2px dashed rgba(255,255,255,0.3);
         }
         
-        .password-input {
+        .shake-icon {
+            font-size: 48px;
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        .shake-counter {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00b8d4;
+            margin-top: 10px;
+        }
+        
+        .rotating-wheel {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+        }
+        
+        .wheel {
             width: 100%;
-            padding: 18px;
-            background: rgba(0,0,0,0.4);
-            border: 2px solid rgba(255,71,87,0.5);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 18px;
-            text-align: center;
-            outline: none;
-            letter-spacing: 3px;
-            font-weight: 700;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #e6007a 0deg 90deg,
+                #00b8d4 90deg 180deg,
+                #ffeb3b 180deg 270deg,
+                #4caf50 270deg 360deg
+            );
+            animation: rotate 4s linear infinite;
+            box-shadow: 0 0 30px rgba(230,0,122,0.5);
         }
         
-        .password-input::placeholder {
-            color: #555;
-            letter-spacing: normal;
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
         }
         
         .submit-btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
+            background: linear-gradient(90deg, #e6007a, #00b8d4);
             border: none;
             border-radius: 15px;
             color: #fff;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 20px;
+            transition: all 0.3s;
+            margin-top: 10px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
+            letter-spacing: 1px;
         }
         
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(142,45,226,0.4);
+            box-shadow: 0 10px 30px rgba(230,0,122,0.4);
         }
         
         .submit-btn:disabled {
@@ -294,265 +450,290 @@
             transform: none;
         }
         
-        .progress-bar {
-            width: 100%;
-            height: 6px;
+        .hint-btn {
+            padding: 10px 20px;
             background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .hint-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .hint-text {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,235,59,0.1);
+            border-left: 3px solid #ffeb3b;
+            border-radius: 5px;
+            color: #ffeb3b;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .hint-text.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255,255,255,0.1);
+            z-index: 100;
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
-            border-radius: 10px;
-            transition: width 0.5s ease;
+            background: linear-gradient(90deg, #e6007a, #00b8d4);
+            transition: width 0.3s;
             width: 0%;
         }
         
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #555;
-            font-size: 11px;
-        }
-
-        .mystery-element {
+        .celebration {
             position: fixed;
-            bottom: -100px;
-            right: 20px;
-            font-size: 8px;
-            color: rgba(255,255,255,0.02);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            z-index: 200;
+            opacity: 0;
             pointer-events: none;
+        }
+        
+        .celebration.show {
+            animation: celebrate 1s ease-out;
+        }
+        
+        @keyframes celebrate {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .mirror-text {
             font-family: monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 15px 0;
+            color: #00b8d4;
+            transform: scaleX(-1);
         }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+        
+        .code-matrix {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin: 15px 0;
         }
-
-        .pulsing {
-            animation: pulse 2s infinite;
+        
+        .matrix-cell {
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .matrix-cell:hover {
+            background: rgba(230,0,122,0.2);
+            transform: scale(1.1);
+        }
+        
+        .matrix-cell.lit {
+            background: linear-gradient(135deg, #e6007a, #00b8d4);
+            box-shadow: 0 0 15px rgba(230,0,122,0.5);
         }
     </style>
 </head>
 <body>
+    <div class="stars" id="stars"></div>
+    
     <div class="phone">
-        <div class="notch"></div>
         <div class="screen">
             <div class="status-bar">
-                <div class="time" id="timeDisplay">9:41</div>
-                <div class="battery">
-                    <span id="batteryLevel">100%</span>
-                    <span>🔋</span>
+                <div id="timeDisplay">9:41</div>
+                <div>🔋 <span id="battery">87%</span></div>
+            </div>
+            
+            <div class="header">
+                <h1>🧩 ENIGMA VAULT</h1>
+                <p style="color: #888; font-size: 12px;">Unlock the mysteries</p>
+                <div class="level-indicator">
+                    <div class="level-dot active"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
                 </div>
             </div>
             
-            <div class="content">
-                <div class="header">
-                    <h1>🔐 Enigma Lock</h1>
-                    <p>Only Human Intuition Can Unlock This</p>
-                </div>
-
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar"></div>
-                </div>
-                
-                <!-- ENIGMA 1 -->
-                <div class="enigma-container" id="enigma1">
-                    <div class="enigma-number">ENIGMA 01</div>
-                    <div class="enigma-title">The Silent Observer</div>
-                    <div class="enigma-text">
-                        "I watch you every day, but you rarely notice me.<br>
-                        I'm always in the same place, yet I travel everywhere.<br>
-                        Right now, I can see something you're wearing.<br>
-                        <br>
-                        What color is it?"
+            <div class="puzzle-container">
+                <!-- Puzzle 1: Color Memory -->
+                <div class="puzzle-card" id="puzzle1">
+                    <div class="puzzle-number">1</div>
+                    <div class="puzzle-title">🎨 Color Memory Sequence</div>
+                    <div class="puzzle-description">
+                        Watch the blinking pattern, then recreate it. Colors will flash 3 times. Remember the order!
                     </div>
-                    <div class="hint-box">
-                        Look at yourself right now. What am I that can see you? What color am I seeing on you?
+                    <div class="color-grid" id="colorGrid">
+                        <div class="color-box" style="background: #e74c3c;" data-color="red"></div>
+                        <div class="color-box" style="background: #3498db;" data-color="blue"></div>
+                        <div class="color-box" style="background: #2ecc71;" data-color="green"></div>
+                        <div class="color-box" style="background: #f39c12;" data-color="yellow"></div>
                     </div>
-                    <div class="input-group">
-                        <div class="input-label">Your Answer (just the color)</div>
-                        <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                class="enigma-input" 
-                                id="answer1" 
-                                placeholder="Type a color..."
-                                autocomplete="off"
-                            >
-                            <span class="status-icon" id="status1"></span>
-                        </div>
-                    </div>
+                    <button class="submit-btn" id="startPattern">Start Pattern</button>
+                    <button class="hint-btn" onclick="toggleHint('hint1')">💡 Hint</button>
+                    <div class="hint-text" id="hint1">Focus on the center of the grid. The pattern forms a shape!</div>
                 </div>
                 
-                <!-- ENIGMA 2 -->
-                <div class="enigma-container" id="enigma2">
-                    <div class="enigma-number">ENIGMA 02</div>
-                    <div class="enigma-title">The Unseen Thread</div>
-                    <div class="enigma-text">
-                        "I connect everyone you know, yet I have no form.<br>
-                        I can be broken but never seen.<br>
-                        I grow stronger when tested, weaker when ignored.<br>
-                        <br>
-                        Think of someone close to you right now.<br>
-                        How many letters are in their first name?"
+                <!-- Puzzle 2: Mirror Text -->
+                <div class="puzzle-card" id="puzzle2">
+                    <div class="puzzle-number">2</div>
+                    <div class="puzzle-title">🪞 Mirror Cipher</div>
+                    <div class="puzzle-description">
+                        Decode the mirrored text below. What does it say?
                     </div>
-                    <div class="hint-box">
-                        What invisible thing connects people? Now think of someone you care about - count the letters in their name.
-                    </div>
-                    <div class="input-group">
-                        <div class="input-label">Your Answer (just the number)</div>
-                        <div class="input-wrapper">
-                            <input 
-                                type="number" 
-                                class="enigma-input" 
-                                id="answer2" 
-                                placeholder="Type a number..."
-                                autocomplete="off"
-                            >
-                            <span class="status-icon" id="status2"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ENIGMA 3 -->
-                <div class="enigma-container" id="enigma3">
-                    <div class="enigma-number">ENIGMA 03</div>
-                    <div class="enigma-title">The Present Moment</div>
-                    <div class="enigma-text">
-                        "I am always arriving but never here.<br>
-                        You cannot hold me, but you spend me.<br>
-                        Look at your screen right now - what hour am I showing?<br>
-                        <br>
-                        But answer me this:<br>
-                        Is that hour morning (AM) or afternoon (PM)?"
-                    </div>
-                    <div class="hint-box">
-                        Look at the time at the top of this screen. What period of day is it in YOUR real world right now?
-                    </div>
-                    <div class="input-group">
-                        <div class="input-label">Your Answer (AM or PM)</div>
-                        <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                class="enigma-input" 
-                                id="answer3" 
-                                placeholder="AM or PM..."
-                                autocomplete="off"
-                                maxlength="2"
-                            >
-                            <span class="status-icon" id="status3"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ENIGMA 4 -->
-                <div class="enigma-container" id="enigma4">
-                    <div class="enigma-number">ENIGMA 04</div>
-                    <div class="enigma-title">The Hidden Pattern</div>
-                    <div class="enigma-text">
-                        "In the room you're in right now,<br>
-                        Count the number of corners where two walls meet.<br>
-                        Don't count the floor or ceiling - just the vertical edges.<br>
-                        <br>
-                        Most rooms have 4, but yours might be different.<br>
-                        What number do you count?"
-                    </div>
-                    <div class="hint-box">
-                        Stand up and look around. Count only the vertical corners where walls meet walls (ignore furniture).
-                    </div>
-                    <div class="input-group">
-                        <div class="input-label">Your Answer (number of corners)</div>
-                        <div class="input-wrapper">
-                            <input 
-                                type="number" 
-                                class="enigma-input" 
-                                id="answer4" 
-                                placeholder="Type a number..."
-                                autocomplete="off"
-                            >
-                            <span class="status-icon" id="status4"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ENIGMA 5 -->
-                <div class="enigma-container" id="enigma5">
-                    <div class="enigma-number">ENIGMA 05</div>
-                    <div class="enigma-title">The Memory Key</div>
-                    <div class="enigma-text">
-                        "Think of the last meal you ate before starting this puzzle.<br>
-                        Was it breakfast, lunch, dinner, or a snack?<br>
-                        <br>
-                        Now, without overthinking:<br>
-                        What was the main color of that food?<br>
-                        (If multiple colors, pick the one you remember most)"
-                    </div>
-                    <div class="hint-box">
-                        Close your eyes. Picture that meal. What color stands out most in your memory?
-                    </div>
-                    <div class="input-group">
-                        <div class="input-label">Your Answer (the color)</div>
-                        <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                class="enigma-input" 
-                                id="answer5" 
-                                placeholder="Type a color..."
-                                autocomplete="off"
-                            >
-                            <span class="status-icon" id="status5"></span>
-                        </div>
-                    </div>
+                    <div class="mirror-text">EMIT SI NOISULLI</div>
+                    <input type="text" class="input-box" id="mirrorInput" placeholder="Type the decoded message...">
+                    <button class="hint-btn" onclick="toggleHint('hint2')">💡 Hint</button>
+                    <div class="hint-text" id="hint2">Try reading it backwards, or hold it up to a mirror!</div>
                 </div>
                 
-                <!-- PASSWORD SECTION -->
-                <div class="password-section">
-                    <div class="password-title">🔑 Final Password</div>
-                    <div class="password-hint">
-                        Combine your answers to form the password:<br>
-                        [Color1] [Number] [AM/PM] [Number] [Color2]<br>
-                        <small style="color: #666;">(Use spaces between each part, lowercase)</small>
+                <!-- Puzzle 3: Shake Counter -->
+                <div class="puzzle-card" id="puzzle3">
+                    <div class="puzzle-number">3</div>
+                    <div class="puzzle-title">📳 Shake to Unlock</div>
+                    <div class="puzzle-description">
+                        Shake your device exactly 7 times to unlock this puzzle.
                     </div>
-                    <input 
-                        type="text" 
-                        class="password-input" 
-                        id="finalPassword" 
-                        placeholder="example: blue 5 am 4 red"
-                        autocomplete="off"
-                    >
-                    <button class="submit-btn" id="submitBtn" disabled>
-                        🔒 Locked - Answer All Enigmas First
-                    </button>
+                    <div class="shake-zone">
+                        <div class="shake-icon">📱</div>
+                        <div class="shake-counter"><span id="shakeCount">0</span> / 7</div>
+                    </div>
+                    <button class="hint-btn" onclick="toggleHint('hint3')">💡 Hint</button>
+                    <div class="hint-text" id="hint3">Give your phone a good shake! Not too gentle, not too hard.</div>
                 </div>
-
-                <div class="footer">
-                    AI Success Rate: 0.00%<br>
-                    Requires: Human perception, memory, and environment
+                
+                <!-- Puzzle 4: Math Pattern -->
+                <div class="puzzle-card" id="puzzle4">
+                    <div class="puzzle-number">4</div>
+                    <div class="puzzle-title">🔢 Number Mystery</div>
+                    <div class="puzzle-description">
+                        What comes next in this sequence?<br>
+                        2, 4, 8, 16, 32, ?
+                    </div>
+                    <input type="number" class="input-box" id="mathInput" placeholder="Enter the next number...">
+                    <button class="hint-btn" onclick="toggleHint('hint4')">💡 Hint</button>
+                    <div class="hint-text" id="hint4">Each number is double the previous one!</div>
+                </div>
+                
+                <!-- Puzzle 5: Color Wheel -->
+                <div class="puzzle-card" id="puzzle5">
+                    <div class="puzzle-number">5</div>
+                    <div class="puzzle-title">🎡 Color Wheel Challenge</div>
+                    <div class="puzzle-description">
+                        Wait for the wheel to stop on BLUE, then tap the button!
+                    </div>
+                    <div class="rotating-wheel">
+                        <div class="wheel-pointer">👇</div>
+                        <div class="wheel" id="wheel"></div>
+                    </div>
+                    <button class="submit-btn" id="wheelBtn">TAP WHEN BLUE!</button>
+                    <button class="hint-btn" onclick="toggleHint('hint5')">💡 Hint</button>
+                    <div class="hint-text" id="hint5">Blue appears at the top. Watch the pointer!</div>
+                </div>
+                
+                <!-- Puzzle 6: Tap Sequence -->
+                <div class="puzzle-card" id="puzzle6">
+                    <div class="puzzle-number">6</div>
+                    <div class="puzzle-title">🎹 Rhythm Code</div>
+                    <div class="puzzle-description">
+                        Tap this pattern: 🔵 🔴 🟢 🔴 🔵
+                    </div>
+                    <div class="sequence-display" id="tapSequence"></div>
+                    <div class="tap-buttons">
+                        <button class="tap-btn" data-tap="🔵" style="background: rgba(52,152,219,0.3);">🔵</button>
+                        <button class="tap-btn" data-tap="🔴" style="background: rgba(231,76,60,0.3);">🔴</button>
+                        <button class="tap-btn" data-tap="🟢" style="background: rgba(46,204,113,0.3);">🟢</button>
+                    </div>
+                    <button class="submit-btn" id="clearTaps">Clear Sequence</button>
+                    <button class="hint-btn" onclick="toggleHint('hint6')">💡 Hint</button>
+                    <div class="hint-text" id="hint6">Blue, Red, Green, Red, Blue - in that exact order!</div>
+                </div>
+                
+                <!-- Puzzle 7: Light Matrix -->
+                <div class="puzzle-card" id="puzzle7">
+                    <div class="puzzle-number">7</div>
+                    <div class="puzzle-title">💡 Light Grid Puzzle</div>
+                    <div class="puzzle-description">
+                        Light up cells to form an "X" pattern (5 cells total)
+                    </div>
+                    <div class="code-matrix" id="matrix">
+                        <!-- Generated by JS -->
+                    </div>
+                    <button class="submit-btn" id="resetMatrix">Reset Grid</button>
+                    <button class="hint-btn" onclick="toggleHint('hint7')">💡 Hint</button>
+                    <div class="hint-text" id="hint7">Click the corners and center to form an X!</div>
+                </div>
+                
+                <!-- Final Challenge -->
+                <div class="puzzle-card" id="puzzleFinal" style="background: rgba(230,0,122,0.1); border-color: rgba(230,0,122,0.3);">
+                    <div class="puzzle-number">🏆</div>
+                    <div class="puzzle-title">🎯 FINAL CHALLENGE</div>
+                    <div class="puzzle-description">
+                        Complete ALL puzzles above to unlock the vault!
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-value" id="sliderValue">Locked 🔒</div>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="finalSlider" disabled>
+                    </div>
+                    <button class="submit-btn" id="unlockBtn" disabled>🔓 UNLOCK VAULT</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="mystery-element">
-        The answer was always within you, not in the code.
+    
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
     </div>
     
+    <div class="celebration" id="celebration">🎉</div>
+    
     <script>
-        // Store user answers
-        let answers = {
-            answer1: '',
-            answer2: '',
-            answer3: '',
-            answer4: '',
-            answer5: ''
-        };
-
-        // Update time display
+        // Generate stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+        
+        // Time display
         function updateTime() {
             const now = new Date();
             const hours = now.getHours() % 12 || 12;
@@ -561,102 +742,287 @@
         }
         updateTime();
         setInterval(updateTime, 1000);
-
-        // Simulate battery drain
-        let battery = 100;
-        setInterval(() => {
-            battery = Math.max(15, battery - Math.random() * 1.5);
-            document.getElementById('batteryLevel').textContent = Math.floor(battery) + '%';
-        }, 5000);
-
-        // Check individual enigma answers
-        function checkAnswer(enigmaNum) {
-            const input = document.getElementById(`answer${enigmaNum}`);
-            const value = input.value.trim().toLowerCase();
-            const status = document.getElementById(`status${enigmaNum}`);
-            const container = document.getElementById(`enigma${enigmaNum}`);
-
-            if (value.length > 0) {
-                // Any answer is accepted as "correct" since we can't verify human context
-                answers[`answer${enigmaNum}`] = value;
-                input.classList.add('correct');
-                status.textContent = '✓';
-                status.classList.add('show');
-                container.classList.add('solved');
-                updateProgress();
-            } else {
-                input.classList.remove('correct');
-                status.classList.remove('show');
-                container.classList.remove('solved');
-                answers[`answer${enigmaNum}`] = '';
-                updateProgress();
+        
+        // Puzzle tracking
+        let puzzlesSolved = {
+            puzzle1: false,
+            puzzle2: false,
+            puzzle3: false,
+            puzzle4: false,
+            puzzle5: false,
+            puzzle6: false,
+            puzzle7: false
+        };
+        
+        // Puzzle 1: Color Pattern
+        let colorSequence = [];
+        let userSequence = [];
+        let patternStarted = false;
+        
+        document.getElementById('startPattern').addEventListener('click', function() {
+            if (patternStarted) return;
+            patternStarted = true;
+            this.textContent = 'Watch carefully...';
+            this.disabled = true;
+            
+            colorSequence = [];
+            userSequence = [];
+            const colors = ['red', 'blue', 'green', 'yellow'];
+            
+            for (let i = 0; i < 3; i++) {
+                colorSequence.push(colors[Math.floor(Math.random() * colors.length)]);
+            }
+            
+            let delay = 0;
+            colorSequence.forEach((color, index) => {
+                setTimeout(() => {
+                    const box = document.querySelector(`[data-color="${color}"]`);
+                    box.style.transform = 'scale(1.2)';
+                    box.style.boxShadow = '0 0 30px white';
+                    setTimeout(() => {
+                        box.style.transform = 'scale(1)';
+                        box.style.boxShadow = 'none';
+                    }, 500);
+                    
+                    if (index === colorSequence.length - 1) {
+                        setTimeout(() => {
+                            document.getElementById('startPattern').textContent = 'Now recreate it!';
+                            document.querySelectorAll('.color-box').forEach(box => {
+                                box.addEventListener('click', handleColorClick);
+                            });
+                        }, 600);
+                    }
+                }, delay);
+                delay += 800;
+            });
+        });
+        
+        function handleColorClick(e) {
+            const color = e.target.dataset.color;
+            userSequence.push(color);
+            e.target.classList.add('selected');
+            
+            setTimeout(() => e.target.classList.remove('selected'), 300);
+            
+            if (userSequence.length === colorSequence.length) {
+                if (JSON.stringify(userSequence) === JSON.stringify(colorSequence)) {
+                    solvePuzzle('puzzle1');
+                    document.getElementById('startPattern').textContent = '✓ Solved!';
+                    document.getElementById('startPattern').style.background = 'linear-gradient(90deg, #2ecc71, #27ae60)';
+                } else {
+                    userSequence = [];
+                    document.getElementById('startPattern').textContent = 'Try again!';
+                    setTimeout(() => {
+                        document.getElementById('startPattern').textContent = 'Recreate the pattern!';
+                    }, 1000);
+                }
             }
         }
-
-        // Update progress bar
-        function updateProgress() {
-            const answered = Object.values(answers).filter(a => a.length > 0).length;
-            const progress = (answered / 5) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-
-            // Enable password input when all answered
-            const submitBtn = document.getElementById('submitBtn');
-            if (answered === 5) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = '🔓 Unlock Now';
-                document.getElementById('finalPassword').focus();
-            } else {
-                submitBtn.disabled = true;
-                submitBtn.textContent = `🔒 Locked - ${5 - answered} Enigma(s) Remaining`;
+        
+        // Puzzle 2: Mirror Text
+        document.getElementById('mirrorInput').addEventListener('input', function() {
+            const answer = this.value.toUpperCase().trim();
+            if (answer === 'ILLUSION IS TIME' || answer === 'TIME IS ILLUSION') {
+                solvePuzzle('puzzle2');
+                this.style.borderColor = '#2ecc71';
+                this.disabled = true;
             }
-        }
-
-        // Add event listeners to all inputs
-        for (let i = 1; i <= 5; i++) {
-            document.getElementById(`answer${i}`).addEventListener('input', () => checkAnswer(i));
-        }
-
-        // Handle final password submission
-        document.getElementById('submitBtn').addEventListener('click', () => {
-            const password = document.getElementById('finalPassword').value.trim().toLowerCase();
-            const expectedPassword = `${answers.answer1} ${answers.answer2} ${answers.answer3} ${answers.answer4} ${answers.answer5}`;
-
-            if (password === expectedPassword) {
-                // Success!
-                document.body.style.background = 'linear-gradient(135deg, #0f4c29 0%, #2ed573 100%)';
+        });
+        
+        // Puzzle 3: Shake Detection
+        let shakeCount = 0;
+        let lastShake = 0;
+        
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', function(event) {
+                const acceleration = event.accelerationIncludingGravity;
+                const threshold = 15;
                 
-                alert(`🎉 UNLOCKED! YOU ARE HUMAN!\n\n` +
-                      `Your Unique Password:\n"${password}"\n\n` +
-                      `This password is yours alone.\n` +
-                      `It was built from:\n` +
-                      `• What you're wearing\n` +
-                      `• Someone you know\n` +
-                      `• Your current time\n` +
-                      `• Your physical space\n` +
-                      `• Your recent memory\n\n` +
-                      `AI cannot replicate this because:\n` +
-                      `✗ AI cannot see you\n` +
-                      `✗ AI cannot observe your room\n` +
-                      `✗ AI cannot access your memories\n` +
-                      `✗ AI cannot know your relationships\n` +
-                      `✗ AI cannot experience your moment\n\n` +
-                      `Human verified: 100%`);
+                if (acceleration && (Math.abs(acceleration.x) > threshold || 
+                    Math.abs(acceleration.y) > threshold || 
+                    Math.abs(acceleration.z) > threshold)) {
+                    
+                    const now = Date.now();
+                    if (now - lastShake > 500 && shakeCount < 7) {
+                        shakeCount++;
+                        lastShake = now;
+                        document.getElementById('shakeCount').textContent = shakeCount;
+                        
+                        if (shakeCount === 7) {
+                            solvePuzzle('puzzle3');
+                            document.querySelector('#puzzle3 .shake-zone').style.background = 
+                                'linear-gradient(135deg, rgba(46,204,113,0.3), rgba(39,174,96,0.3))';
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Puzzle 4: Math Pattern
+        document.getElementById('mathInput').addEventListener('input', function() {
+            if (this.value === '64') {
+                solvePuzzle('puzzle4');
+                this.style.borderColor = '#2ecc71';
+                this.disabled = true;
+            }
+        });
+        
+        // Puzzle 5: Color Wheel
+        let wheelStopped = false;
+        document.getElementById('wheelBtn').addEventListener('click', function() {
+            const wheel = document.getElementById('wheel');
+            const currentRotation = parseFloat(getComputedStyle(wheel).transform.split(',')[4]) || 0;
+            
+            // Pause animation
+            wheel.style.animationPlayState = 'paused';
+            wheelStopped = true;
+            
+            // Check if blue is at top (90-180 degrees)
+            const rotation = (currentRotation % 360 + 360) % 360;
+            if (rotation >= 80 && rotation <= 190) {
+                solvePuzzle('puzzle5');
+                this.textContent = '✓ Perfect timing!';
+                this.style.background = 'linear-gradient(90deg, #2ecc71, #27ae60)';
             } else {
-                alert(`❌ Incorrect Password\n\nYour password should be:\n"${expectedPassword}"\n\nYou entered:\n"${password}"\n\nMake sure to:\n• Use lowercase\n• Separate each part with a space\n• Follow the exact order shown`);
+                this.textContent = 'Try again!';
+                setTimeout(() => {
+                    wheel.style.animationPlayState = 'running';
+                    this.textContent = 'TAP WHEN BLUE!';
+                    wheelStopped = false;
+                }, 1500);
             }
         });
-
-        // Easter egg: Konami code
-        let konamiCode = [];
-        const konami = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
-        document.addEventListener('keydown', (e) => {
-            konamiCode.push(e.key.toLowerCase());
-            konamiCode = konamiCode.slice(-10);
-            if (konamiCode.join('') === konami.join('')) {
-                alert('🎮 Easter Egg Found!\nBut even this doesn\'t help AI solve the puzzle. 😉');
-            }
+        
+        // Puzzle 6: Tap Sequence
+        const correctSequence = ['🔵', '🔴', '🟢', '🔴', '🔵'];
+        let currentTaps = [];
+        
+        document.querySelectorAll('.tap-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tap = this.dataset.tap;
+                currentTaps.push(tap);
+                document.getElementById('tapSequence').textContent = currentTaps.join(' ');
+                
+                if (currentTaps.length === 5) {
+                    if (JSON.stringify(currentTaps) === JSON.stringify(correctSequence)) {
+                        solvePuzzle('puzzle6');
+                        document.getElementById('tapSequence').style.color = '#2ecc71';
+                    } else {
+                        document.getElementById('tapSequence').style.color = '#e74c3c';
+                        setTimeout(() => {
+                            currentTaps = [];
+                            document.getElementById('tapSequence').textContent = '';
+                            document.getElementById('tapSequence').style.color = '#e6007a';
+                        }, 1000);
+                    }
+                }
+            });
         });
+        
+        document.getElementById('clearTaps').addEventListener('click', function() {
+            currentTaps = [];
+            document.getElementById('tapSequence').textContent = '';
+        });
+        
+        // Puzzle 7: Light Matrix
+        const matrix = document.getElementById('matrix');
+        const matrixSize = 5;
+        let litCells = new Set();
+        
+        for (let i = 0; i < matrixSize * matrixSize; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'matrix-cell';
+            cell.dataset.index = i;
+            matrix.appendChild(cell);
+            
+            cell.addEventListener('click', function() {
+                const index = parseInt(this.dataset.index);
+                if (litCells.has(index)) {
+                    litCells.delete(index);
+                    this.classList.remove('lit');
+                } else {
+                    litCells.add(index);
+                    this.classList.add('lit');
+                }
+                
+                // Check for X pattern: 0, 4, 12, 20, 24
+                const xPattern = new Set([0, 4, 12, 20, 24]);
+                if (litCells.size === 5 && 
+                    [...litCells].every(i => xPattern.has(i)) &&
+                    [...xPattern].every(i => litCells.has(i))) {
+                    solvePuzzle('puzzle7');
+                }
+            });
+        }
+        
+        document.getElementById('resetMatrix').addEventListener('click', function() {
+            litCells.clear();
+            document.querySelectorAll('.matrix-cell').forEach(cell => {
+                cell.classList.remove('lit');
+            });
+        });
+        
+        // Solve puzzle function
+        function solvePuzzle(puzzleId) {
+            if (puzzlesSolved[puzzleId]) return;
+            
+            puzzlesSolved[puzzleId] = true;
+            document.getElementById(puzzleId).classList.add('solved');
+            
+            // Celebration effect
+            const celebration = document.getElementById('celebration');
+            celebration.classList.add('show');
+            setTimeout(() => celebration.classList.remove('show'), 1000);
+            
+            updateProgress();
+            updateLevelIndicator();
+            
+            // Check if all puzzles solved
+            if (Object.values(puzzlesSolved).every(solved => solved)) {
+                unlockFinalChallenge();
+            }
+        }
+        
+        function updateProgress() {
+            const solved = Object.values(puzzlesSolved).filter(s => s).length;
+            const total = Object.keys(puzzlesSolved).length;
+            const percentage = (solved / total) * 100;
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+        
+        function updateLevelIndicator() {
+            const dots = document.querySelectorAll('.level-dot');
+            const solved = Object.values(puzzlesSolved).filter(s => s).length;
+            dots.forEach((dot, index) => {
+                if (index < solved) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        function unlockFinalChallenge() {
+            document.getElementById('finalSlider').disabled = false;
+            document.getElementById('sliderValue').textContent = 'Slide to 100!';
+            
+            document.getElementById('finalSlider').addEventListener('input', function() {
+                document.getElementById('sliderValue').textContent = this.value + '%';
+                if (this.value == 100) {
+                    document.getElementById('unlockBtn').disabled = false;
+                    document.getElementById('sliderValue').textContent = 'Ready! 🎉';
+                }
+            });
+            
+            document.getElementById('unlockBtn').addEventListener('click', function() {
+                alert('🏆 CONGRATULATIONS! 🏆\n\nYou\'ve unlocked the Enigma Vault!\n\nAll 7 puzzles solved!\nYou are truly human! 🧠✨');
+                this.textContent = '✓ VAULT UNLOCKED!';
+                this.style.background = 'linear-gradient(90deg, #2ecc71, #27ae60)';
+            });
+        }
+        
+        function toggleHint(hintId) {
+            const hint = document.getElementById(hintId);
+            hint.classList.toggle('show');
+        }
     </script>
 </body>
-
 </html>
