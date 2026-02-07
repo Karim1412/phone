@@ -1,528 +1,467 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Locked Phone - Diary</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian Phone - 1996 Secret</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-      }
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-      .phone {
-        width: 375px;
-        height: 667px;
-        background: #000;
-        border-radius: 40px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
-        position: relative;
-        border: 8px solid #1a1a1a;
-      }
+        .phone-container {
+            width: 380px;
+            height: 760px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            padding: 15px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
 
-      .notch {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 200px;
-        height: 30px;
-        background: #000;
-        border-radius: 0 0 20px 20px;
-        z-index: 100;
-      }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
 
-      .screen {
-        width: 100%;
-        height: 100%;
-        background: #111;
-        position: relative;
-        overflow-y: auto;
-      }
+        /* Lock Screen */
+        .lock-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #0f0f23 0%, #1a1a3e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
 
-      .lock-screen,
-      .enigma-screen,
-      .diary-screen {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 40px 30px;
-        color: #fff;
-      }
+        .lock-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
 
-      .hidden {
-        display: none !important;
-      }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
 
-      /* Lock Screen */
-      .time {
-        font-size: 72px;
-        font-weight: 200;
-        margin-bottom: 10px;
-      }
+        .puzzle-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
 
-      .date {
-        font-size: 18px;
-        color: #999;
-        margin-bottom: 60px;
-      }
+        .puzzle-title {
+            color: #4ade80;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
 
-      .lock-icon {
-        font-size: 48px;
-        margin-bottom: 20px;
-      }
+        .puzzle-question {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
 
-      .unlock-btn {
-        background: rgba(255, 255, 255, 0.15);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        color: #fff;
-        padding: 15px 40px;
-        font-size: 16px;
-        border-radius: 25px;
-        cursor: pointer;
-        transition: all 0.3s;
-        backdrop-filter: blur(10px);
-      }
+        .puzzle-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid #4ade80;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            text-align: center;
+        }
 
-      .unlock-btn:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: scale(1.05);
-      }
+        .puzzle-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
 
-      /* Enigma Screen */
-      .enigma-container {
-        width: 100%;
-        max-width: 320px;
-      }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4ade80;
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
 
-      .enigma-header {
-        text-align: center;
-        margin-bottom: 30px;
-      }
+        .submit-btn:hover {
+            background: #22c55e;
+            transform: translateY(-2px);
+        }
 
-      .enigma-title {
-        font-size: 24px;
-        margin-bottom: 10px;
-      }
+        .error-msg {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+        }
 
-      .enigma-progress {
-        font-size: 14px;
-        color: #999;
-      }
+        .success-msg {
+            color: #4ade80;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+        }
 
-      .enigma-box {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 20px;
-        backdrop-filter: blur(10px);
-      }
+        /* Vintage 1996 Screen */
+        .vintage-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #00ffff 0%, #ff00ff 50%, #ffff00 100%);
+            display: none;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            animation: vintageGlow 3s infinite alternate;
+        }
 
-      .enigma-question {
-        font-size: 16px;
-        line-height: 1.6;
-        margin-bottom: 20px;
-        color: #e0e0e0;
-      }
+        @keyframes vintageGlow {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.1); }
+        }
 
-      .enigma-hint {
-        font-size: 12px;
-        color: #888;
-        font-style: italic;
-        margin-bottom: 15px;
-      }
+        .vintage-screen.active {
+            display: flex;
+        }
 
-      .enigma-input {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        border-radius: 8px;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.05);
-        color: #fff;
-        margin-bottom: 15px;
-      }
+        .vintage-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.1) 0px,
+                    rgba(0, 0, 0, 0.1) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+        }
 
-      .enigma-input:focus {
-        outline: none;
-        border-color: #667eea;
-      }
+        .vintage-header {
+            background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #000;
+            position: relative;
+            z-index: 1;
+        }
 
-      .submit-btn {
-        width: 100%;
-        padding: 12px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
-        border-radius: 8px;
-        color: #fff;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
+        .vintage-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0, 0, 0, 0.3);
+            animation: rainbow 3s infinite;
+        }
 
-      .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-      }
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            17% { color: #ff8800; }
+            33% { color: #ffff00; }
+            50% { color: #00ff00; }
+            67% { color: #0088ff; }
+            83% { color: #8800ff; }
+            100% { color: #ff0000; }
+        }
 
-      .submit-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
+        .vintage-subtitle {
+            font-size: 14px;
+            color: #000;
+            margin-top: 10px;
+            font-weight: bold;
+        }
 
-      .error-msg {
-        color: #ff6b6b;
-        font-size: 14px;
-        margin-top: 10px;
-        text-align: center;
-      }
+        .vintage-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.9);
+        }
 
-      .success-msg {
-        color: #51cf66;
-        font-size: 14px;
-        margin-top: 10px;
-        text-align: center;
-      }
+        .vintage-person {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            border-radius: 50%;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            border: 5px solid #000;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
 
-      /* Diary Screen */
-      .diary-header {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 15px;
-        text-align: center;
-        position: sticky;
-        top: 0;
-        backdrop-filter: blur(10px);
-        z-index: 10;
-      }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
 
-      .diary-title {
-        font-size: 20px;
-        font-weight: 600;
-      }
+        .vintage-message {
+            background: #fff;
+            border: 5px solid #000;
+            padding: 20px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
+            max-width: 280px;
+        }
 
-      .diary-content {
-        flex: 1;
-        width: 100%;
-        overflow-y: auto;
-        padding: 20px;
-      }
+        .vintage-message::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 20px solid #000;
+        }
 
-      .diary-entry {
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 15px;
-        border-left: 4px solid #667eea;
-      }
+        .vintage-message::after {
+            content: '';
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 15px solid #fff;
+        }
 
-      .entry-date {
-        font-size: 12px;
-        color: #888;
-        margin-bottom: 10px;
-      }
+        .vintage-text {
+            font-size: 16px;
+            color: #000;
+            text-align: center;
+            line-height: 1.6;
+            font-weight: bold;
+        }
 
-      .entry-title {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 10px;
-        color: #667eea;
-      }
+        .secret-badge {
+            display: inline-block;
+            background: #ff00ff;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            border: 2px solid #000;
+            animation: blink 1s infinite;
+        }
 
-      .entry-text {
-        font-size: 14px;
-        line-height: 1.8;
-        color: #ddd;
-      }
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.5; }
+        }
 
-      .navigation {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-      }
+        .vintage-footer {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+        }
 
-      .nav-btn {
-        flex: 1;
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
+        .hidden {
+            display: none;
+        }
 
-      .nav-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
-      }
-
-      .nav-btn.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-color: transparent;
-      }
-
-      .page-indicator {
-        text-align: center;
-        color: #888;
-        font-size: 12px;
-        margin-top: 10px;
-      }
+        .puzzle-progress {
+            color: #4ade80;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
     </style>
-  </head>
-  <body>
-    <div class="phone">
-      <div class="notch"></div>
-      <div class="screen">
-        <!-- Lock Screen -->
-        <div class="lock-screen" id="lockScreen">
-          <div class="time" id="currentTime">12:34</div>
-          <div class="date" id="currentDate">Monday, January 1</div>
-          <div class="lock-icon">🔒</div>
-          <button class="unlock-btn" onclick="startEnigmas()">Unlock</button>
-        </div>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="phone-screen">
+            <!-- Lock Screen -->
+            <div class="lock-screen" id="lockScreen">
+                <div class="lock-icon">🔒</div>
+                <h2 style="color: #4ade80; margin-bottom: 30px;">Guardian Phone</h2>
+                <div class="puzzle-progress" id="progress">Puzzle <span id="currentPuzzle">1</span> of 3</div>
 
-        <!-- Enigma Screen -->
-        <div class="enigma-screen hidden" id="enigmaScreen">
-          <div class="enigma-container">
-            <div class="enigma-header">
-              <div class="enigma-title">🧩 Unlock Challenge</div>
-              <div class="enigma-progress" id="enigmaProgress">
-                Enigma 1 of 5
-              </div>
-            </div>
-            <div class="enigma-box">
-              <div class="enigma-question" id="enigmaQuestion"></div>
-              <div class="enigma-hint" id="enigmaHint"></div>
-              <input
-                type="text"
-                class="enigma-input"
-                id="enigmaInput"
-                placeholder="Enter your answer..."
-              />
-              <button class="submit-btn" onclick="checkAnswer()">
-                Submit Answer
-              </button>
-              <div id="enigmaMessage"></div>
-            </div>
-          </div>
-        </div>
+                <!-- Puzzle 1 -->
+                <div class="puzzle-container" id="puzzle1">
+                    <div class="puzzle-title">🧩 Enigma 1: The Year Riddle</div>
+                    <div class="puzzle-question">
+                        I'm a year in the past,<br>
+                        When the internet was vast,<br>
+                        Windows 95 was here to last,<br>
+                        Add one more year, what's the forecast?
+                    </div>
+                    <input type="text" class="puzzle-input" id="answer1" placeholder="Enter the year...">
+                    <button class="submit-btn" onclick="checkAnswer1()">Submit Answer</button>
+                    <div class="error-msg" id="error1"></div>
+                </div>
 
-        <!-- Diary Screen -->
-        <div class="diary-screen hidden" id="diaryScreen">
-          <div class="diary-header">
-            <div class="diary-title">📔 Personal Diary</div>
-          </div>
-          <div class="diary-content" id="diaryContent">
-            <!-- Diary entries will be loaded here -->
-          </div>
+                <!-- Puzzle 2 -->
+                <div class="puzzle-container hidden" id="puzzle2">
+                    <div class="puzzle-title">🔢 Enigma 2: The Mathematical Gate</div>
+                    <div class="puzzle-question">
+                        On which floor does the secret lie?<br>
+                        Where digits dance and multiply:<br>
+                        2 × 2 = ?
+                    </div>
+                    <input type="text" class="puzzle-input" id="answer2" placeholder="Enter the floor number...">
+                    <button class="submit-btn" onclick="checkAnswer2()">Submit Answer</button>
+                    <div class="error-msg" id="error2"></div>
+                </div>
+
+                <!-- Puzzle 3 -->
+                <div class="puzzle-container hidden" id="puzzle3">
+                    <div class="puzzle-title">🎓 Enigma 3: The Final Code</div>
+                    <div class="puzzle-question">
+                        Where knowledge flows in binary streams,<br>
+                        Where future coders chase their dreams,<br>
+                        Two words reveal this sacred place,<br>
+                        Type them together, no space to trace.
+                    </div>
+                    <input type="text" class="puzzle-input" id="answer3" placeholder="Two words, no space...">
+                    <button class="submit-btn" onclick="checkAnswer3()">Submit Answer</button>
+                    <div class="error-msg" id="error3"></div>
+                </div>
+            </div>
+
+            <!-- Vintage 1996 Screen -->
+            <div class="vintage-screen" id="vintageScreen">
+                <div class="vintage-bg"></div>
+                <div class="vintage-header">
+                    <div class="vintage-title">✨ WELCOME TO 1996 ✨</div>
+                    <div class="vintage-subtitle">Gate in Étage 4 • Digital School</div>
+                </div>
+                <div class="vintage-content">
+                    <div class="vintage-person">👤</div>
+                    <div class="vintage-message">
+                        <div class="vintage-text">
+                            "Don't tell others<br>
+                            it's a secret"
+                            <div class="secret-badge">🤫 TOP SECRET</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="vintage-footer">
+                    ⚡ GUARDIAN PHONE SYSTEM v1.996 ⚡<br>
+                    █▓▒░ AUTHORIZED ACCESS GRANTED ░▒▓█
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <script>
-      // Update time and date
-      function updateTime() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        document.getElementById("currentTime").textContent =
-          `${hours}:${minutes}`;
+        let currentPuzzle = 1;
 
-        const options = { weekday: "long", month: "long", day: "numeric" };
-        document.getElementById("currentDate").textContent =
-          now.toLocaleDateString("en-US", options);
-      }
-      updateTime();
-      setInterval(updateTime, 1000);
-
-      // Enigmas
-      const enigmas = [
-        {
-          question:
-            "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
-          hint: "Think about sound...",
-          answer: "echo",
-        },
-        {
-          question: "The more you take, the more you leave behind. What am I?",
-          hint: "Think about walking...",
-          answer: "footsteps",
-        },
-        {
-          question:
-            "I am not alive, but I grow; I don't have lungs, but I need air; I don't have a mouth, but water kills me. What am I?",
-          hint: "Think about something hot...",
-          answer: "fire",
-        },
-        {
-          question:
-            "What has keys but no locks, space but no room, and you can enter but can't go inside?",
-          hint: "Think about technology...",
-          answer: "keyboard",
-        },
-        {
-          question:
-            "I watch the crowd from walls and beams,I know your secrets, your sleepy dreams.At EPI Digital, I quietly stay,Guiding your hunger in a subtle way...who am I ?",
-          hint: "chat me y3awench ",
-          answer: "buvette digital",
-        },
-      ];
-
-      let currentEnigma = 0;
-
-      function startEnigmas() {
-        document.getElementById("lockScreen").classList.add("hidden");
-        document.getElementById("enigmaScreen").classList.remove("hidden");
-        loadEnigma();
-      }
-
-      function loadEnigma() {
-        if (currentEnigma >= enigmas.length) {
-          unlockDiary();
-          return;
-        }
-
-        const enigma = enigmas[currentEnigma];
-        document.getElementById("enigmaQuestion").textContent = enigma.question;
-        document.getElementById("enigmaHint").textContent =
-          `Hint: ${enigma.hint}`;
-        document.getElementById("enigmaProgress").textContent =
-          `Enigma ${currentEnigma + 1} of ${enigmas.length}`;
-        document.getElementById("enigmaInput").value = "";
-        document.getElementById("enigmaMessage").textContent = "";
-      }
-
-      function checkAnswer() {
-        const userAnswer = document
-          .getElementById("enigmaInput")
-          .value.toLowerCase()
-          .trim();
-        const correctAnswer = enigmas[currentEnigma].answer.toLowerCase();
-        const messageEl = document.getElementById("enigmaMessage");
-
-        if (userAnswer === correctAnswer) {
-          messageEl.className = "success-msg";
-          messageEl.textContent = "✓ Correct! Loading next challenge...";
-
-          setTimeout(() => {
-            currentEnigma++;
-            loadEnigma();
-          }, 1500);
-        } else {
-          messageEl.className = "error-msg";
-          messageEl.textContent = "✗ Incorrect. Try again!";
-        }
-      }
-
-      // Handle Enter key
-      document.addEventListener("DOMContentLoaded", function () {
-        document
-          .getElementById("enigmaInput")
-          .addEventListener("keypress", function (e) {
-            if (e.key === "Enter") {
-              checkAnswer();
+        function checkAnswer1() {
+            const answer = document.getElementById('answer1').value.trim();
+            const errorMsg = document.getElementById('error1');
+            
+            if (answer === '1996') {
+                errorMsg.className = 'success-msg';
+                errorMsg.textContent = '✓ Correct! Unlocking next puzzle...';
+                setTimeout(() => {
+                    document.getElementById('puzzle1').classList.add('hidden');
+                    document.getElementById('puzzle2').classList.remove('hidden');
+                    currentPuzzle = 2;
+                    document.getElementById('currentPuzzle').textContent = '2';
+                }, 1500);
+            } else {
+                errorMsg.className = 'error-msg';
+                errorMsg.textContent = '✗ Incorrect. Think about 1995 + 1...';
             }
-          });
-      });
+        }
 
-      // Diary entries
-      const diaryEntries = [
-        {
-          date: "December 15, 2023",
-          title: "The Beginning",
-          text: "Today I decided to start this diary. There's something about putting thoughts into words that makes them feel more real. I've been thinking a lot about the path I'm on and where it might lead. The journey of self-discovery is never straightforward, but I'm learning to embrace the uncertainty.",
-        },
-        {
-          date: "December 22, 2023",
-          title: "Winter Reflections",
-          text: "The snow fell softly today, covering everything in a blanket of white. It reminded me that even the harshest seasons bring their own kind of beauty. I've been reading more, writing more, thinking more. It's amazing how much clarity comes when you give yourself permission to slow down.",
-        },
-        {
-          date: "January 1, 2024",
-          title: "New Year, New Perspective",
-          text: "Another year begins. I'm not making grand resolutions this time. Instead, I'm focusing on small, meaningful changes. Be kinder to myself. Listen more. Create more. Let go of what no longer serves me. These feel more authentic than any list of goals ever did.",
-        },
-        {
-          date: "January 14, 2024",
-          title: "Dreams and Reality",
-          text: "Had the strangest dream last night about walking through a library where all the books were blank. When I opened them, words would appear just for me. Maybe it's my subconscious telling me that I'm the author of my own story. Every day is a blank page waiting to be filled.",
-        },
-        {
-          date: "January 28, 2024",
-          title: "Lessons Learned",
-          text: "Someone told me today that courage isn't the absence of fear—it's acting despite it. That really resonated with me. I've been holding myself back from so many things because I'm afraid of failure. But what if failure is just another word for learning? What if every mistake is actually a step forward?",
-        },
-        {
-          date: "February 5, 2024",
-          title: "Finding Peace",
-          text: "I'm learning that peace isn't something you find—it's something you create. It's in the quiet moments, the deep breaths, the deliberate choices to let go of chaos. Today I chose peace over being right. And surprisingly, it felt like winning.",
-        },
-        {
-          date: "February 14, 2024",
-          title: "Love and Self",
-          text: "Valentine's Day, but I'm celebrating differently this year. I'm learning to love myself first. Not in a selfish way, but in a way that fills my cup so I can pour into others. You can't give what you don't have. Self-love isn't vanity; it's necessary.",
-        },
-        {
-          date: "February 28, 2024",
-          title: "The Journey Continues",
-          text: "Looking back through these pages, I can see how much I've grown in just a few months. The questions are different now. Deeper. More meaningful. I'm no longer asking 'What do people expect of me?' but 'What do I expect of myself?' And that shift has made all the difference.",
-        },
-      ];
+        function checkAnswer2() {
+            const answer = document.getElementById('answer2').value.trim();
+            const errorMsg = document.getElementById('error2');
+            
+            if (answer === '4') {
+                errorMsg.className = 'success-msg';
+                errorMsg.textContent = '✓ Correct! Unlocking final puzzle...';
+                setTimeout(() => {
+                    document.getElementById('puzzle2').classList.add('hidden');
+                    document.getElementById('puzzle3').classList.remove('hidden');
+                    currentPuzzle = 3;
+                    document.getElementById('currentPuzzle').textContent = '3';
+                }, 1500);
+            } else {
+                errorMsg.className = 'error-msg';
+                errorMsg.textContent = '✗ Wrong floor! What is 2 × 2?';
+            }
+        }
 
-      function unlockDiary() {
-        document.getElementById("enigmaScreen").classList.add("hidden");
-        document.getElementById("diaryScreen").classList.remove("hidden");
-        loadDiaryPage(0);
-      }
+        function checkAnswer3() {
+            const answer = document.getElementById('answer3').value.trim().toLowerCase();
+            const errorMsg = document.getElementById('error3');
+            
+            if (answer === 'digitalschool') {
+                errorMsg.className = 'success-msg';
+                errorMsg.textContent = '✓ ACCESS GRANTED! Welcome to 1996...';
+                setTimeout(() => {
+                    document.getElementById('lockScreen').style.display = 'none';
+                    document.getElementById('vintageScreen').classList.add('active');
+                }, 2000);
+            } else {
+                errorMsg.className = 'error-msg';
+                errorMsg.textContent = '✗ Incorrect code. Hint: Two words, no space!';
+            }
+        }
 
-      let currentPage = 0;
-      const entriesPerPage = 2;
-
-      function loadDiaryPage(page) {
-        currentPage = page;
-        const start = page * entriesPerPage;
-        const end = start + entriesPerPage;
-        const pageEntries = diaryEntries.slice(start, end);
-
-        let html = "";
-        pageEntries.forEach((entry) => {
-          html += `
-                    <div class="diary-entry">
-                        <div class="entry-date">${entry.date}</div>
-                        <div class="entry-title">${entry.title}</div>
-                        <div class="entry-text">${entry.text}</div>
-                    </div>
-                `;
+        // Allow Enter key to submit
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (currentPuzzle === 1) checkAnswer1();
+                else if (currentPuzzle === 2) checkAnswer2();
+                else if (currentPuzzle === 3) checkAnswer3();
+            }
         });
-
-        const totalPages = Math.ceil(diaryEntries.length / entriesPerPage);
-        html += `
-                <div class="navigation">
-                    <button class="nav-btn ${page === 0 ? "" : "active"}" onclick="loadDiaryPage(${page - 1})" ${page === 0 ? "disabled" : ""}>← Previous</button>
-                    <button class="nav-btn ${page === totalPages - 1 ? "" : "active"}" onclick="loadDiaryPage(${page + 1})" ${page === totalPages - 1 ? "disabled" : ""}>Next →</button>
-                </div>
-                <div class="page-indicator">Page ${page + 1} of ${totalPages}</div>
-            `;
-
-        document.getElementById("diaryContent").innerHTML = html;
-      }
     </script>
-  </body>
+</body>
 </html>
