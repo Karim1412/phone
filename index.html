@@ -1,879 +1,979 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guardian Phone - 1996 Gate</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+      body {
+        font-family: "Courier New", monospace;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
 
-        .phone-container {
-            width: 380px;
-            height: 760px;
-            background: #1a1a1a;
-            border-radius: 40px;
-            padding: 15px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
+      .phone-container {
+        width: 380px;
+        height: 760px;
+        background: #1a1a1a;
+        border-radius: 40px;
+        padding: 15px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        position: relative;
+      }
 
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            background: #000;
-            border-radius: 30px;
-            overflow: hidden;
-            position: relative;
-        }
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        background: #000;
+        border-radius: 30px;
+        overflow: hidden;
+        position: relative;
+      }
 
-        /* Lock Screen */
-        .lock-screen {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #0f0f23 0%, #1a1a3e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 20px;
-            overflow-y: auto;
-        }
+      /* Lock Screen */
+      .lock-screen {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, #0f0f23 0%, #1a1a3e 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 20px;
+        overflow-y: auto;
+      }
 
-        .lock-header {
-            margin: 20px 0;
-            text-align: center;
-        }
+      .lock-header {
+        margin: 20px 0;
+        text-align: center;
+      }
 
-        .lock-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            animation: pulse 2s infinite;
-        }
+      .lock-icon {
+        font-size: 50px;
+        margin-bottom: 15px;
+        animation: pulse 2s infinite;
+      }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
         }
-
-        .puzzle-container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 15px 0;
-            width: 100%;
-            backdrop-filter: blur(10px);
+        50% {
+          transform: scale(1.1);
         }
+      }
 
-        .puzzle-title {
-            color: #4ade80;
-            font-size: 16px;
-            margin-bottom: 12px;
-            text-align: center;
-        }
+      .puzzle-container {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 15px 0;
+        width: 100%;
+        backdrop-filter: blur(10px);
+      }
 
-        .puzzle-question {
-            color: #fff;
-            font-size: 13px;
-            margin-bottom: 12px;
-            line-height: 1.6;
-        }
+      .puzzle-title {
+        color: #4ade80;
+        font-size: 16px;
+        margin-bottom: 12px;
+        text-align: center;
+      }
 
-        .visual-puzzle {
-            background: #000;
-            border: 2px solid #4ade80;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 15px 0;
-            text-align: center;
-            font-family: monospace;
-        }
+      .puzzle-question {
+        color: #fff;
+        font-size: 13px;
+        margin-bottom: 12px;
+        line-height: 1.6;
+      }
 
-        .symbol-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 15px 0;
-        }
+      .visual-puzzle {
+        background: #000;
+        border: 2px solid #4ade80;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        text-align: center;
+        font-family: monospace;
+      }
 
-        .symbol-cell {
-            background: #1a1a3e;
-            border: 2px solid #4ade80;
-            padding: 15px;
-            font-size: 24px;
-            border-radius: 8px;
-        }
+      .symbol-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin: 15px 0;
+      }
 
-        .color-code {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
+      .symbol-cell {
+        background: #1a1a3e;
+        border: 2px solid #4ade80;
+        padding: 15px;
+        font-size: 24px;
+        border-radius: 8px;
+      }
 
-        .color-box {
-            width: 50px;
-            height: 50px;
-            border: 2px solid #fff;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
+      .color-code {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 15px 0;
+        flex-wrap: wrap;
+      }
 
-        .puzzle-input {
-            width: 100%;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid #4ade80;
-            border-radius: 8px;
-            color: #fff;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            text-align: center;
-        }
+      .color-box {
+        width: 50px;
+        height: 50px;
+        border: 2px solid #fff;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+      }
 
-        .puzzle-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
+      .puzzle-input {
+        width: 100%;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid #4ade80;
+        border-radius: 8px;
+        color: #fff;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        text-align: center;
+      }
 
-        .submit-btn {
-            width: 100%;
-            padding: 10px;
-            background: #4ade80;
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 12px;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
+      .puzzle-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
 
-        .submit-btn:hover {
-            background: #22c55e;
-            transform: translateY(-2px);
-        }
+      .submit-btn {
+        width: 100%;
+        padding: 10px;
+        background: #4ade80;
+        border: none;
+        border-radius: 8px;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 12px;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
 
-        .error-msg {
-            color: #ef4444;
-            font-size: 11px;
-            margin-top: 8px;
-            text-align: center;
-        }
+      .submit-btn:hover {
+        background: #22c55e;
+        transform: translateY(-2px);
+      }
 
-        .success-msg {
-            color: #4ade80;
-            font-size: 11px;
-            margin-top: 8px;
-            text-align: center;
-        }
+      .error-msg {
+        color: #ef4444;
+        font-size: 11px;
+        margin-top: 8px;
+        text-align: center;
+      }
 
-        .hint-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+      .success-msg {
+        color: #4ade80;
+        font-size: 11px;
+        margin-top: 8px;
+        text-align: center;
+      }
 
-        .hint-text {
-            color: #fbbf24;
-            font-size: 11px;
-            margin-top: 8px;
-            font-style: italic;
-        }
+      .hidden {
+        display: none;
+      }
 
-        .hidden {
-            display: none;
-        }
+      .puzzle-progress {
+        color: #4ade80;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 13px;
+      }
 
-        .puzzle-progress {
-            color: #4ade80;
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 13px;
-        }
+      .matrix-text {
+        color: #4ade80;
+        font-size: 16px;
+        line-height: 1.8;
+        letter-spacing: 2px;
+      }
 
-        .matrix-text {
-            color: #4ade80;
-            font-size: 16px;
-            line-height: 1.8;
-            letter-spacing: 2px;
-        }
-
-        /* ========================================
+      /* ========================================
            VINTAGE 1996 WINDOWS 95 STYLE INTERFACE
            ======================================== */
-        
-        .vintage-screen {
-            width: 100%;
-            height: 100%;
-            background: #008080;
-            display: none;
-            flex-direction: column;
-            position: relative;
-            font-family: 'MS Sans Serif', 'Arial', sans-serif;
-        }
 
-        .vintage-screen.active {
-            display: flex;
-        }
+      .vintage-screen {
+        width: 100%;
+        height: 100%;
+        background: #008080;
+        display: none;
+        flex-direction: column;
+        position: relative;
+        font-family: "MS Sans Serif", "Arial", sans-serif;
+      }
 
-        /* Windows 95 Window */
-        .win95-window {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 340px;
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #000000 #000000 #ffffff;
-            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
-        }
+      .vintage-screen.active {
+        display: flex;
+      }
 
-        /* Title Bar */
-        .win95-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 3px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      /* Windows 95 Window */
+      .win95-window {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 340px;
+        background: #c0c0c0;
+        border: 2px solid;
+        border-color: #ffffff #000000 #000000 #ffffff;
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+      }
 
-        .win95-title {
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: bold;
-            padding-left: 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+      /* Title Bar */
+      .win95-titlebar {
+        background: linear-gradient(90deg, #000080, #1084d0);
+        padding: 3px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .win95-icon {
-            width: 16px;
-            height: 16px;
-            background: #ffff00;
-            border: 1px solid #000;
-        }
+      .win95-title {
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: bold;
+        padding-left: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
 
-        .win95-buttons {
-            display: flex;
-            gap: 2px;
-        }
+      .win95-icon {
+        width: 16px;
+        height: 16px;
+        background: #ffff00;
+        border: 1px solid #000;
+      }
 
-        .win95-btn {
-            width: 16px;
-            height: 14px;
-            background: #c0c0c0;
-            border: 1px solid;
-            border-color: #ffffff #000000 #000000 #ffffff;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
+      .win95-buttons {
+        display: flex;
+        gap: 2px;
+      }
 
-        /* Menu Bar */
-        .win95-menubar {
-            background: #c0c0c0;
-            border-bottom: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            padding: 2px 5px;
-            font-size: 11px;
-        }
+      .win95-btn {
+        width: 16px;
+        height: 14px;
+        background: #c0c0c0;
+        border: 1px solid;
+        border-color: #ffffff #000000 #000000 #ffffff;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
 
-        /* Content Area */
-        .win95-content {
-            background: #ffffff;
-            padding: 25px 20px;
-            min-height: 400px;
-            position: relative;
-            overflow-y: auto;
-        }
+      /* Menu Bar */
+      .win95-menubar {
+        background: #c0c0c0;
+        border-bottom: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        padding: 2px 5px;
+        font-size: 11px;
+      }
 
-        /* Main Welcome Message */
-        .welcome-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+      /* Content Area */
+      .win95-content {
+        background: #ffffff;
+        padding: 25px 20px;
+        min-height: 400px;
+        position: relative;
+        overflow-y: auto;
+      }
 
-        .welcome-title {
-            font-size: 32px;
-            font-weight: bold;
-            color: #000080;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 0 #ff00ff, 4px 4px 0 #00ffff;
-            font-family: 'Comic Sans MS', cursive;
-            animation: color-shift 3s infinite;
-        }
+      /* Main Welcome Message */
+      .welcome-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
 
-        @keyframes color-shift {
-            0%, 100% { color: #000080; }
-            33% { color: #800080; }
-            66% { color: #008080; }
-        }
+      .welcome-title {
+        font-size: 32px;
+        font-weight: bold;
+        color: #000080;
+        margin-bottom: 15px;
+        text-shadow:
+          2px 2px 0 #ff00ff,
+          4px 4px 0 #00ffff;
+        font-family: "Comic Sans MS", cursive;
+        animation: color-shift 3s infinite;
+      }
 
-        .welcome-subtitle {
-            font-size: 18px;
-            color: #ff00ff;
-            font-weight: bold;
-            margin-bottom: 10px;
+      @keyframes color-shift {
+        0%,
+        100% {
+          color: #000080;
         }
-
-        .gate-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ffff00, #ff00ff);
-            border: 3px solid #000080;
-            padding: 10px 20px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #000;
-            margin: 20px 0;
-            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
-            animation: blink-badge 1s infinite;
+        33% {
+          color: #800080;
         }
-
-        @keyframes blink-badge {
-            0%, 50%, 100% { opacity: 1; }
-            25%, 75% { opacity: 0.7; }
+        66% {
+          color: #008080;
         }
+      }
 
-        /* Instructions Box */
-        .instruction-box {
-            background: #ffffcc;
-            border: 2px solid #000080;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+      .welcome-subtitle {
+        font-size: 18px;
+        color: #ff00ff;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .gate-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #ffff00, #ff00ff);
+        border: 3px solid #000080;
+        padding: 10px 20px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #000;
+        margin: 20px 0;
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+        animation: blink-badge 1s infinite;
+      }
+
+      @keyframes blink-badge {
+        0%,
+        50%,
+        100% {
+          opacity: 1;
         }
-
-        .instruction-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ff0000;
-            margin-bottom: 15px;
-            text-align: center;
-            font-family: 'Comic Sans MS', cursive;
+        25%,
+        75% {
+          opacity: 0.7;
         }
+      }
 
-        .instruction-text {
-            font-size: 16px;
-            color: #000;
-            line-height: 1.8;
-            margin-bottom: 10px;
-            font-weight: bold;
+      /* Instructions Box */
+      .instruction-box {
+        background: #ffffcc;
+        border: 2px solid #000080;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .instruction-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff0000;
+        margin-bottom: 15px;
+        text-align: center;
+        font-family: "Comic Sans MS", cursive;
+      }
+
+      .instruction-text {
+        font-size: 16px;
+        color: #000;
+        line-height: 1.8;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+
+      .location-highlight {
+        background: #00ff00;
+        padding: 15px;
+        border: 3px solid #000;
+        margin: 15px 0;
+        text-align: center;
+      }
+
+      .location-text {
+        font-size: 22px;
+        font-weight: bold;
+        color: #000;
+        font-family: "Impact", "Arial Black", sans-serif;
+        letter-spacing: 2px;
+      }
+
+      .school-name {
+        font-size: 20px;
+        color: #0000ff;
+        font-weight: bold;
+        margin-top: 8px;
+      }
+
+      /* Secret Message */
+      .secret-box {
+        background: #ff00ff;
+        border: 3px dashed #ffff00;
+        padding: 15px;
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .secret-text {
+        font-size: 18px;
+        color: #fff;
+        font-weight: bold;
+        text-shadow: 2px 2px 0 #000;
+        font-style: italic;
+      }
+
+      /* Animated Elements */
+      .retro-gif {
+        width: 80px;
+        height: 80px;
+        margin: 15px auto;
+        background: linear-gradient(45deg, #ff00ff, #00ffff);
+        border: 3px solid #000;
+        animation: spin-3d 3s linear infinite;
+        position: relative;
+      }
+
+      @keyframes spin-3d {
+        0% {
+          transform: rotateY(0deg);
         }
-
-        .location-highlight {
-            background: #00ff00;
-            padding: 15px;
-            border: 3px solid #000;
-            margin: 15px 0;
-            text-align: center;
+        100% {
+          transform: rotateY(360deg);
         }
+      }
 
-        .location-text {
-            font-size: 22px;
-            font-weight: bold;
-            color: #000;
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            letter-spacing: 2px;
+      .retro-gif::before {
+        content: "★";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 40px;
+        color: #ffff00;
+      }
+
+      /* Decorative Elements */
+      .decoration-strip {
+        background: linear-gradient(
+          90deg,
+          #ff0000,
+          #ff8800,
+          #ffff00,
+          #00ff00,
+          #00ffff,
+          #0000ff,
+          #ff00ff,
+          #ff0000
+        );
+        height: 8px;
+        margin: 15px 0;
+        animation: slide-bg 2s linear infinite;
+        background-size: 200% 100%;
+      }
+
+      @keyframes slide-bg {
+        0% {
+          background-position: 0% 50%;
         }
-
-        .school-name {
-            font-size: 20px;
-            color: #0000ff;
-            font-weight: bold;
-            margin-top: 8px;
+        100% {
+          background-position: 100% 50%;
         }
+      }
 
-        /* Secret Message */
-        .secret-box {
-            background: #ff00ff;
-            border: 3px dashed #ffff00;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: center;
+      /* Status Bar */
+      .win95-statusbar {
+        background: #c0c0c0;
+        border-top: 2px solid;
+        border-color: #ffffff #000000 #000000 #ffffff;
+        padding: 5px;
+        display: flex;
+        gap: 5px;
+      }
+
+      .status-panel {
+        border: 1px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        padding: 2px 8px;
+        font-size: 11px;
+        flex: 1;
+      }
+
+      /* Background Pattern */
+      .vintage-bg-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        pointer-events: none;
+        background-image:
+          repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            #000 10px,
+            #000 20px
+          ),
+          repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 10px,
+            #000 10px,
+            #000 20px
+          );
+      }
+
+      /* Animated Stars */
+      .bg-stars {
+        position: absolute;
+        font-size: 24px;
+        animation: float-star 4s ease-in-out infinite;
+      }
+
+      .star-1 {
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+      .star-2 {
+        top: 20%;
+        right: 15%;
+        animation-delay: 1s;
+      }
+      .star-3 {
+        bottom: 20%;
+        left: 15%;
+        animation-delay: 2s;
+      }
+      .star-4 {
+        bottom: 30%;
+        right: 10%;
+        animation-delay: 3s;
+      }
+
+      @keyframes float-star {
+        0%,
+        100% {
+          transform: translateY(0px) scale(1);
         }
-
-        .secret-text {
-            font-size: 18px;
-            color: #fff;
-            font-weight: bold;
-            text-shadow: 2px 2px 0 #000;
-            font-style: italic;
+        50% {
+          transform: translateY(-20px) scale(1.2);
         }
+      }
 
-        /* Animated Elements */
-        .retro-gif {
-            width: 80px;
-            height: 80px;
-            margin: 15px auto;
-            background: linear-gradient(45deg, #ff00ff, #00ffff);
-            border: 3px solid #000;
-            animation: spin-3d 3s linear infinite;
-            position: relative;
+      .arrow-pointer {
+        display: inline-block;
+        color: #ff0000;
+        font-size: 24px;
+        animation: bounce-arrow 1s infinite;
+      }
+
+      @keyframes bounce-arrow {
+        0%,
+        100% {
+          transform: translateX(0);
         }
-
-        @keyframes spin-3d {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
+        50% {
+          transform: translateX(10px);
         }
-
-        .retro-gif::before {
-            content: '★';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 40px;
-            color: #ffff00;
-        }
-
-        /* Decorative Elements */
-        .decoration-strip {
-            background: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
-            height: 8px;
-            margin: 15px 0;
-            animation: slide-bg 2s linear infinite;
-            background-size: 200% 100%;
-        }
-
-        @keyframes slide-bg {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        /* Status Bar */
-        .win95-statusbar {
-            background: #c0c0c0;
-            border-top: 2px solid;
-            border-color: #ffffff #000000 #000000 #ffffff;
-            padding: 5px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .status-panel {
-            border: 1px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            padding: 2px 8px;
-            font-size: 11px;
-            flex: 1;
-        }
-
-        /* Background Pattern */
-        .vintage-bg-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            pointer-events: none;
-            background-image: 
-                repeating-linear-gradient(45deg, transparent, transparent 10px, #000 10px, #000 20px),
-                repeating-linear-gradient(-45deg, transparent, transparent 10px, #000 10px, #000 20px);
-        }
-
-        /* Animated Stars */
-        .bg-stars {
-            position: absolute;
-            font-size: 24px;
-            animation: float-star 4s ease-in-out infinite;
-        }
-
-        .star-1 { top: 10%; left: 10%; animation-delay: 0s; }
-        .star-2 { top: 20%; right: 15%; animation-delay: 1s; }
-        .star-3 { bottom: 20%; left: 15%; animation-delay: 2s; }
-        .star-4 { bottom: 30%; right: 10%; animation-delay: 3s; }
-
-        @keyframes float-star {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-20px) scale(1.2); }
-        }
-
-        .arrow-pointer {
-            display: inline-block;
-            color: #ff0000;
-            font-size: 24px;
-            animation: bounce-arrow 1s infinite;
-        }
-
-        @keyframes bounce-arrow {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="phone-container">
-        <div class="phone-screen">
-            <!-- Lock Screen -->
-            <div class="lock-screen" id="lockScreen">
-                <div class="lock-header">
-                    <div class="lock-icon">🔒</div>
-                    <h2 style="color: #4ade80; margin-bottom: 20px; font-size: 22px;">Guardian Phone</h2>
-                    <div class="puzzle-progress" id="progress">Challenge <span id="currentPuzzle">1</span> of 5</div>
-                </div>
-
-                <!-- Puzzle 1: Visual Pattern Recognition -->
-                <div class="puzzle-container" id="puzzle1">
-                    <div class="puzzle-title">🎨 Challenge 1: The Color Cipher</div>
-                    <div class="puzzle-question">
-                        Each color represents a letter. Decode the word:<br>
-                        <small style="color: #888;">Red=G, Blue=A, Green=T, Yellow=E</small>
-                    </div>
-                    <div class="color-code">
-                        <div class="color-box" style="background: #ff0000;">R</div>
-                        <div class="color-box" style="background: #0000ff;">B</div>
-                        <div class="color-box" style="background: #00ff00;">G</div>
-                        <div class="color-box" style="background: #ffff00;">Y</div>
-                    </div>
-                    <div class="puzzle-question" style="margin-top: 15px;">
-                        Look at the first letter of each color name in the boxes above.<br>
-                        What 4-letter word do they spell?
-                    </div>
-                    <input type="text" class="puzzle-input" id="answer1" placeholder="Enter the 4-letter word...">
-                    <button class="submit-btn" onclick="checkAnswer1()">Decode</button>
-                    <button class="hint-btn" onclick="showHint1()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint1">💡 Read the first letter of: Red, Blue, Green, Yellow</div>
-                    <div class="error-msg" id="error1"></div>
-                </div>
-
-                <!-- Puzzle 2: Symbol Math -->
-                <div class="puzzle-container hidden" id="puzzle2">
-                    <div class="puzzle-title">🔣 Challenge 2: Symbol Mathematics</div>
-                    <div class="puzzle-question">
-                        If ★ + ★ = 6, and ♦ × 2 = 8, and ● - 1 = 2<br>
-                        What is ★ + ♦ + ● - 5 = ?
-                    </div>
-                    <div class="visual-puzzle">
-                        <div style="color: #4ade80; font-size: 20px; margin: 10px 0;">
-                            ★ + ★ = 6<br>
-                            ♦ × 2 = 8<br>
-                            ● - 1 = 2<br>
-                            <div style="border-top: 2px solid #4ade80; margin: 15px 0; padding-top: 15px;">
-                                ★ + ♦ + ● - 5 = ?
-                            </div>
-                        </div>
-                    </div>
-                    <input type="text" class="puzzle-input" id="answer2" placeholder="Enter the number...">
-                    <button class="submit-btn" onclick="checkAnswer2()">Calculate</button>
-                    <button class="hint-btn" onclick="showHint2()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint2">💡 First find each symbol's value: ★=3, ♦=4, ●=3, then add them up and subtract 5</div>
-                    <div class="error-msg" id="error2"></div>
-                </div>
-
-                <!-- Puzzle 3: Reverse Alphabetical Cipher -->
-                <div class="puzzle-container hidden" id="puzzle3">
-                    <div class="puzzle-title">🔄 Challenge 3: The Mirror Alphabet</div>
-                    <div class="puzzle-question">
-                        In the mirror alphabet, A↔Z, B↔Y, C↔X, etc.<br>
-                        Decode this message:
-                    </div>
-                    <div class="visual-puzzle">
-                        <div class="matrix-text">
-                            WRTRGZO HXSLLO
-                        </div>
-                    </div>
-                    <div class="puzzle-question" style="font-size: 11px; margin-top: 10px;">
-                        (Two words, write them together with no space)
-                    </div>
-                    <input type="text" class="puzzle-input" id="answer3" placeholder="Decode the mirror text...">
-                    <button class="submit-btn" onclick="checkAnswer3()">Decrypt</button>
-                    <button class="hint-btn" onclick="showHint3()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint3">💡 W↔D, R↔I, T↔G, etc. Replace each letter with its opposite in the alphabet</div>
-                    <div class="error-msg" id="error3"></div>
-                </div>
-
-                <!-- Puzzle 4: Pattern Sequence -->
-                <div class="puzzle-container hidden" id="puzzle4">
-                    <div class="puzzle-title">🧮 Challenge 4: The Hidden Pattern</div>
-                    <div class="puzzle-question">
-                        Look at this sequence carefully:
-                    </div>
-                    <div class="visual-puzzle">
-                        <div class="matrix-text" style="font-size: 18px; letter-spacing: 4px;">
-                            2, 3, 5, 7, 11, 13, 17, ?
-                        </div>
-                    </div>
-                    <div class="puzzle-question" style="margin-top: 10px;">
-                        What comes next? This number reveals a special floor.
-                    </div>
-                    <input type="text" class="puzzle-input" id="answer4" placeholder="What's the next number?">
-                    <button class="submit-btn" onclick="checkAnswer4()">Submit</button>
-                    <button class="hint-btn" onclick="showHint4()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint4">💡 These are prime numbers (only divisible by 1 and themselves)</div>
-                    <div class="error-msg" id="error4"></div>
-                </div>
-
-                <!-- Puzzle 5: Historical Event -->
-                <div class="puzzle-container hidden" id="puzzle5">
-                    <div class="puzzle-title">🎮 Challenge 5: The Gaming Revolution</div>
-                    <div class="puzzle-question">
-                        A legendary gaming console was released that changed everything.<br>
-                        It brought 3D gaming to the masses and was created by a Japanese company.<br>
-                        <br>
-                        <strong style="color: #4ade80;">Clues:</strong><br>
-                        • Famous game: "Super M____ 64"<br>
-                        • Company rhymes with "Intended"<br>
-                        • Had a controller with a joystick in the middle<br>
-                        • Competitors: Sony PlayStation & Sega Saturn<br>
-                        <br>
-                        In what year was this revolutionary console launched in North America?
-                    </div>
-                    <input type="text" class="puzzle-input" id="answer5" placeholder="Enter the year (4 digits)...">
-                    <button class="submit-btn" onclick="checkAnswer5()">Submit</button>
-                    <button class="hint-btn" onclick="showHint5()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint5">💡 Think about the Nintendo 64. It was released in the mid-1990s...</div>
-                    <div class="error-msg" id="error5"></div>
-                </div>
+      <div class="phone-screen">
+        <!-- Lock Screen -->
+        <div class="lock-screen" id="lockScreen">
+          <div class="lock-header">
+            <div class="lock-icon">🔒</div>
+            <h2 style="color: #4ade80; margin-bottom: 20px; font-size: 22px">
+              Guardian Phone
+            </h2>
+            <div class="puzzle-progress" id="progress">
+              Challenge <span id="currentPuzzle">1</span> of 5
             </div>
+          </div>
 
-            <!-- Vintage 1996 Windows 95 Style Screen -->
-            <div class="vintage-screen" id="vintageScreen">
-                <div class="vintage-bg-pattern"></div>
-                
-                <!-- Background Animated Stars -->
-                <div class="bg-stars star-1">⭐</div>
-                <div class="bg-stars star-2">✨</div>
-                <div class="bg-stars star-3">💫</div>
-                <div class="bg-stars star-4">🌟</div>
-
-                <!-- Windows 95 Window -->
-                <div class="win95-window">
-                    <!-- Title Bar -->
-                    <div class="win95-titlebar">
-                        <div class="win95-title">
-                            <div class="win95-icon"></div>
-                            Secret Message - 1996
-                        </div>
-                        <div class="win95-buttons">
-                            <div class="win95-btn">_</div>
-                            <div class="win95-btn">□</div>
-                            <div class="win95-btn">×</div>
-                        </div>
-                    </div>
-
-                    <!-- Menu Bar -->
-                    <div class="win95-menubar">
-                        File &nbsp; Edit &nbsp; View &nbsp; Help
-                    </div>
-
-                    <!-- Content Area -->
-                    <div class="win95-content">
-                        <!-- Welcome Header -->
-                        <div class="welcome-header">
-                            <div class="welcome-title">
-                                ★ WELCOME TO ★<br>
-                                THE GATE OF 1996
-                            </div>
-                            <div class="retro-gif"></div>
-                            <div class="gate-badge">🚪 1996 PORTAL 🚪</div>
-                        </div>
-
-                        <div class="decoration-strip"></div>
-
-                        <!-- Instructions -->
-                        <div class="instruction-box">
-                            <div class="instruction-title">📍 YOUR MISSION:</div>
-                            <div class="instruction-text">
-                                <span class="arrow-pointer">➤</span> Go to:
-                            </div>
-                            
-                            <div class="location-highlight">
-                                <div class="location-text">ÉTAGE 4</div>
-                                <div class="school-name">EPI DIGITAL SCHOOL</div>
-                            </div>
-
-                            <div class="instruction-text" style="text-align: center; margin-top: 15px;">
-                                ⚠️ This is your destination! ⚠️
-                            </div>
-                        </div>
-
-                        <div class="decoration-strip"></div>
-
-                        <!-- Secret Message -->
-                        <div class="secret-box">
-                            <div class="secret-text">
-                                🤫 "Don't tell others<br>
-                                it's a secret" 🤫
-                            </div>
-                        </div>
-
-                        <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #808080;">
-                            <marquee behavior="scroll" scrollamount="3">
-                                ★ Welcome to the digital time portal! ★ You have been granted special access ★
-                            </marquee>
-                        </div>
-                    </div>
-
-                    <!-- Status Bar -->
-                    <div class="win95-statusbar">
-                        <div class="status-panel">Ready</div>
-                        <div class="status-panel">Access: GRANTED</div>
-                    </div>
-                </div>
+          <!-- Puzzle 1: Visual Pattern Recognition -->
+          <div class="puzzle-container" id="puzzle1">
+            <div class="puzzle-title">🎨 Challenge 1: The Color Cipher</div>
+            <div class="puzzle-question">
+              Each color represents a letter. Decode the word:<br />
+              <small style="color: #888"
+                >Red=G, Blue=A, Green=T, Yellow=E</small
+              >
             </div>
+            <div class="color-code">
+              <div class="color-box" style="background: #ff0000">R</div>
+              <div class="color-box" style="background: #0000ff">B</div>
+              <div class="color-box" style="background: #00ff00">G</div>
+              <div class="color-box" style="background: #ffff00">Y</div>
+            </div>
+            <div class="puzzle-question" style="margin-top: 15px">
+              Look at the first letter of each color name in the boxes above.<br />
+              What 4-letter word do they spell?
+            </div>
+            <input
+              type="text"
+              class="puzzle-input"
+              id="answer1"
+              placeholder="Enter the 4-letter word..."
+            />
+            <button class="submit-btn" onclick="checkAnswer1()">Decode</button>
+
+            <div class="error-msg" id="error1"></div>
+          </div>
+
+          <!-- Puzzle 2: Symbol Math -->
+          <div class="puzzle-container hidden" id="puzzle2">
+            <div class="puzzle-title">🔣 Challenge 2: Symbol Mathematics</div>
+            <div class="puzzle-question">
+              If ★ + ★ = 6, and ♦ × 2 = 8, and ● - 1 = 2<br />
+              What is ★ + ♦ + ● - 5 = ?
+            </div>
+            <div class="visual-puzzle">
+              <div style="color: #4ade80; font-size: 20px; margin: 10px 0">
+                ★ + ★ = 6<br />
+                ♦ × 2 = 8<br />
+                ● - 1 = 2<br />
+                <div
+                  style="
+                    border-top: 2px solid #4ade80;
+                    margin: 15px 0;
+                    padding-top: 15px;
+                  "
+                >
+                  ★ + ♦ + ● - 5 = ?
+                </div>
+              </div>
+            </div>
+            <input
+              type="text"
+              class="puzzle-input"
+              id="answer2"
+              placeholder="Enter the number..."
+            />
+            <button class="submit-btn" onclick="checkAnswer2()">
+              Calculate
+            </button>
+
+            <div class="error-msg" id="error2"></div>
+          </div>
+
+          <!-- Puzzle 3: Reverse Alphabetical Cipher -->
+          <div class="puzzle-container hidden" id="puzzle3">
+            <div class="puzzle-title">🔄 Challenge 3: The Mirror Alphabet</div>
+            <div class="puzzle-question">Decode this message:</div>
+            <div class="visual-puzzle">
+              <div class="matrix-text">WRTRGZO HXSLLO</div>
+            </div>
+            <div
+              class="puzzle-question"
+              style="font-size: 11px; margin-top: 10px"
+            >
+              (Two words, write them together with no space)
+            </div>
+            <input
+              type="text"
+              class="puzzle-input"
+              id="answer3"
+              placeholder="Decode the mirror text..."
+            />
+            <button class="submit-btn" onclick="checkAnswer3()">Decrypt</button>
+            <div class="error-msg" id="error3"></div>
+          </div>
+
+          <!-- Puzzle 4: Pattern Sequence -->
+          <div class="puzzle-container hidden" id="puzzle4">
+            <div class="puzzle-title">🧮 Challenge 4: The Hidden Pattern</div>
+            <div class="puzzle-question">Look at this sequence carefully:</div>
+            <div class="visual-puzzle">
+              <div
+                class="matrix-text"
+                style="font-size: 18px; letter-spacing: 4px"
+              >
+                2, 3, 5, 7, 11, 13, 17, ?
+              </div>
+            </div>
+            <div class="puzzle-question" style="margin-top: 10px">
+              What comes next? This number reveals a special floor.
+            </div>
+            <input
+              type="text"
+              class="puzzle-input"
+              id="answer4"
+              placeholder="What's the next number?"
+            />
+            <button class="submit-btn" onclick="checkAnswer4()">Submit</button>
+            <div class="error-msg" id="error4"></div>
+          </div>
+
+          <!-- Puzzle 5: Historical Event -->
+          <div class="puzzle-container hidden" id="puzzle5">
+            <div class="puzzle-title">
+              🎮 Challenge 5: The Gaming Revolution
+            </div>
+            <div class="puzzle-question">
+              A legendary gaming console was released that changed
+              everything.<br />
+              It brought 3D gaming to the masses and was created by a Japanese
+              company.<br />
+              <br />
+              <strong style="color: #4ade80">Clues:</strong><br />
+              • Famous game: "Super M____ 64"<br />
+              • Company rhymes with "Intended"<br />
+              • Had a controller with a joystick in the middle<br />
+              • Competitors: Sony PlayStation & Sega Saturn<br />
+              <br />
+              In what year was this revolutionary console launched in North
+              America?
+            </div>
+            <input
+              type="text"
+              class="puzzle-input"
+              id="answer5"
+              placeholder="Enter the year (4 digits)..."
+            />
+            <button class="submit-btn" onclick="checkAnswer5()">Submit</button>
+            <div class="error-msg" id="error5"></div>
+          </div>
         </div>
+
+        <!-- Vintage 1996 Windows 95 Style Screen -->
+        <div class="vintage-screen" id="vintageScreen">
+          <div class="vintage-bg-pattern"></div>
+
+          <!-- Background Animated Stars -->
+          <div class="bg-stars star-1">⭐</div>
+          <div class="bg-stars star-2">✨</div>
+          <div class="bg-stars star-3">💫</div>
+          <div class="bg-stars star-4">🌟</div>
+
+          <!-- Windows 95 Window -->
+          <div class="win95-window">
+            <!-- Title Bar -->
+            <div class="win95-titlebar">
+              <div class="win95-title">
+                <div class="win95-icon"></div>
+                Secret Message - 1996
+              </div>
+              <div class="win95-buttons">
+                <div class="win95-btn">_</div>
+                <div class="win95-btn">□</div>
+                <div class="win95-btn">×</div>
+              </div>
+            </div>
+
+            <!-- Menu Bar -->
+            <div class="win95-menubar">
+              File &nbsp; Edit &nbsp; View &nbsp; Help
+            </div>
+
+            <!-- Content Area -->
+            <div class="win95-content">
+              <!-- Welcome Header -->
+              <div class="welcome-header">
+                <div class="welcome-title">
+                  ★ WELCOME TO ★<br />
+                  THE GATE OF 1996
+                </div>
+                <div class="retro-gif"></div>
+                <div class="gate-badge">🚪 1996 PORTAL 🚪</div>
+              </div>
+
+              <div class="decoration-strip"></div>
+
+              <!-- Instructions -->
+              <div class="instruction-box">
+                <div class="instruction-title">📍 YOUR MISSION:</div>
+                <div class="instruction-text">
+                  <span class="arrow-pointer">➤</span> Go to:
+                </div>
+
+                <div class="location-highlight">
+                  <div class="location-text">ÉTAGE 4</div>
+                  <div class="school-name">EPI DIGITAL SCHOOL</div>
+                </div>
+
+                <div
+                  class="instruction-text"
+                  style="text-align: center; margin-top: 15px"
+                >
+                  ⚠️ This is your destination! ⚠️
+                </div>
+              </div>
+
+              <div class="decoration-strip"></div>
+
+              <!-- Secret Message -->
+              <div class="secret-box">
+                <div class="secret-text">
+                  🤫 "Don't tell others<br />
+                  it's a secret" 🤫
+                </div>
+              </div>
+
+              <div
+                style="
+                  text-align: center;
+                  margin-top: 20px;
+                  font-size: 14px;
+                  color: #808080;
+                "
+              >
+                <marquee behavior="scroll" scrollamount="3">
+                  ★ Welcome to the digital time portal! ★ You have been granted
+                  special access ★
+                </marquee>
+              </div>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="win95-statusbar">
+              <div class="status-panel">Ready</div>
+              <div class="status-panel">Access: GRANTED</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        let currentPuzzle = 1;
+      let currentPuzzle = 1;
 
-        function showHint1() {
-            document.getElementById('hint1').classList.remove('hidden');
+      function checkAnswer1() {
+        const answer = document
+          .getElementById("answer1")
+          .value.trim()
+          .toUpperCase();
+        const errorMsg = document.getElementById("error1");
+
+        if (answer === "RBGY") {
+          errorMsg.className = "success-msg";
+          errorMsg.textContent =
+            "✓ Color cipher decoded! Moving to next challenge...";
+          setTimeout(() => {
+            document.getElementById("puzzle1").classList.add("hidden");
+            document.getElementById("puzzle2").classList.remove("hidden");
+            currentPuzzle = 2;
+            document.getElementById("currentPuzzle").textContent = "2";
+          }, 1500);
+        } else {
+          errorMsg.className = "error-msg";
+          errorMsg.textContent =
+            "✗ Wrong! Look at the FIRST LETTER of each color name in the boxes.";
         }
+      }
 
-        function showHint2() {
-            document.getElementById('hint2').classList.remove('hidden');
+      function checkAnswer2() {
+        const answer = document.getElementById("answer2").value.trim();
+        const errorMsg = document.getElementById("error2");
+
+        // ★ = 3, ♦ = 4, ● = 3
+        // 3 + 4 + 3 - 5 = 5
+        if (answer === "5") {
+          errorMsg.className = "success-msg";
+          errorMsg.textContent = "✓ Symbol math solved! Advancing...";
+          setTimeout(() => {
+            document.getElementById("puzzle2").classList.add("hidden");
+            document.getElementById("puzzle3").classList.remove("hidden");
+            currentPuzzle = 3;
+            document.getElementById("currentPuzzle").textContent = "3";
+          }, 1500);
+        } else {
+          errorMsg.className = "error-msg";
+          errorMsg.textContent =
+            "✗ Incorrect! Calculate each symbol first, then solve the equation.";
         }
+      }
 
-        function showHint3() {
-            document.getElementById('hint3').classList.remove('hidden');
+      function checkAnswer3() {
+        const answer = document
+          .getElementById("answer3")
+          .value.trim()
+          .toLowerCase();
+        const errorMsg = document.getElementById("error3");
+
+        // WRTRGZO HXSLLO -> DIGITAL SCHOOL (Atbash cipher: A=Z, B=Y, etc.)
+        if (answer === "digitalschool") {
+          errorMsg.className = "success-msg";
+          errorMsg.textContent =
+            "✓ Mirror alphabet cracked! Next level unlocking...";
+          setTimeout(() => {
+            document.getElementById("puzzle3").classList.add("hidden");
+            document.getElementById("puzzle4").classList.remove("hidden");
+            currentPuzzle = 4;
+            document.getElementById("currentPuzzle").textContent = "4";
+          }, 1500);
+        } else {
+          errorMsg.className = "error-msg";
+          errorMsg.textContent =
+            "✗ Not quite! Remember: A↔Z, B↔Y, C↔X... apply this to every letter.";
         }
+      }
 
-        function showHint4() {
-            document.getElementById('hint4').classList.remove('hidden');
+      function checkAnswer4() {
+        const answer = document.getElementById("answer4").value.trim();
+        const errorMsg = document.getElementById("error4");
+
+        // Prime number sequence: next is 19
+        if (answer === "19") {
+          errorMsg.className = "success-msg";
+          errorMsg.textContent =
+            "✓ Pattern recognized! Final challenge loading...";
+          setTimeout(() => {
+            document.getElementById("puzzle4").classList.add("hidden");
+            document.getElementById("puzzle5").classList.remove("hidden");
+            currentPuzzle = 5;
+            document.getElementById("currentPuzzle").textContent = "5";
+          }, 1500);
+        } else {
+          errorMsg.className = "error-msg";
+          errorMsg.textContent =
+            "✗ Wrong number! These are prime numbers... what's the next one?";
         }
+      }
 
-        function showHint5() {
-            document.getElementById('hint5').classList.remove('hidden');
+      function checkAnswer5() {
+        const answer = document.getElementById("answer5").value.trim();
+        const errorMsg = document.getElementById("error5");
+
+        // Nintendo 64 was released in North America in 1996
+        if (answer === "1996") {
+          errorMsg.className = "success-msg";
+          errorMsg.textContent =
+            "✓ CORRECT! The Nintendo 64 launched in 1996! Opening portal...";
+          setTimeout(() => {
+            document.getElementById("lockScreen").style.display = "none";
+            document.getElementById("vintageScreen").classList.add("active");
+          }, 2000);
+        } else {
+          errorMsg.className = "error-msg";
+          errorMsg.textContent =
+            "✗ Wrong year! Think about when the N64 came to North America...";
         }
+      }
 
-        function checkAnswer1() {
-            const answer = document.getElementById('answer1').value.trim().toUpperCase();
-            const errorMsg = document.getElementById('error1');
-            
-            if (answer === 'RBGY') {
-                errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ Color cipher decoded! Moving to next challenge...';
-                setTimeout(() => {
-                    document.getElementById('puzzle1').classList.add('hidden');
-                    document.getElementById('puzzle2').classList.remove('hidden');
-                    currentPuzzle = 2;
-                    document.getElementById('currentPuzzle').textContent = '2';
-                }, 1500);
-            } else {
-                errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Wrong! Look at the FIRST LETTER of each color name in the boxes.';
-            }
+      // Allow Enter key to submit
+      document.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          if (currentPuzzle === 1) checkAnswer1();
+          else if (currentPuzzle === 2) checkAnswer2();
+          else if (currentPuzzle === 3) checkAnswer3();
+          else if (currentPuzzle === 4) checkAnswer4();
+          else if (currentPuzzle === 5) checkAnswer5();
         }
-
-        function checkAnswer2() {
-            const answer = document.getElementById('answer2').value.trim();
-            const errorMsg = document.getElementById('error2');
-            
-            // ★ = 3, ♦ = 4, ● = 3
-            // 3 + 4 + 3 - 5 = 5
-            if (answer === '5') {
-                errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ Symbol math solved! Advancing...';
-                setTimeout(() => {
-                    document.getElementById('puzzle2').classList.add('hidden');
-                    document.getElementById('puzzle3').classList.remove('hidden');
-                    currentPuzzle = 3;
-                    document.getElementById('currentPuzzle').textContent = '3';
-                }, 1500);
-            } else {
-                errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Incorrect! Calculate each symbol first, then solve the equation.';
-            }
-        }
-
-        function checkAnswer3() {
-            const answer = document.getElementById('answer3').value.trim().toLowerCase();
-            const errorMsg = document.getElementById('error3');
-            
-            // WRTRGZO HXSLLO -> DIGITAL SCHOOL (Atbash cipher: A=Z, B=Y, etc.)
-            if (answer === 'digitalschool') {
-                errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ Mirror alphabet cracked! Next level unlocking...';
-                setTimeout(() => {
-                    document.getElementById('puzzle3').classList.add('hidden');
-                    document.getElementById('puzzle4').classList.remove('hidden');
-                    currentPuzzle = 4;
-                    document.getElementById('currentPuzzle').textContent = '4';
-                }, 1500);
-            } else {
-                errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Not quite! Remember: A↔Z, B↔Y, C↔X... apply this to every letter.';
-            }
-        }
-
-        function checkAnswer4() {
-            const answer = document.getElementById('answer4').value.trim();
-            const errorMsg = document.getElementById('error4');
-            
-            // Prime number sequence: next is 19
-            if (answer === '19') {
-                errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ Pattern recognized! Final challenge loading...';
-                setTimeout(() => {
-                    document.getElementById('puzzle4').classList.add('hidden');
-                    document.getElementById('puzzle5').classList.remove('hidden');
-                    currentPuzzle = 5;
-                    document.getElementById('currentPuzzle').textContent = '5';
-                }, 1500);
-            } else {
-                errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Wrong number! These are prime numbers... what\'s the next one?';
-            }
-        }
-
-        function checkAnswer5() {
-            const answer = document.getElementById('answer5').value.trim();
-            const errorMsg = document.getElementById('error5');
-            
-            // Nintendo 64 was released in North America in 1996
-            if (answer === '1996') {
-                errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ CORRECT! The Nintendo 64 launched in 1996! Opening portal...';
-                setTimeout(() => {
-                    document.getElementById('lockScreen').style.display = 'none';
-                    document.getElementById('vintageScreen').classList.add('active');
-                }, 2000);
-            } else {
-                errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Wrong year! Think about when the N64 came to North America...';
-            }
-        }
-
-        // Allow Enter key to submit
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                if (currentPuzzle === 1) checkAnswer1();
-                else if (currentPuzzle === 2) checkAnswer2();
-                else if (currentPuzzle === 3) checkAnswer3();
-                else if (currentPuzzle === 4) checkAnswer4();
-                else if (currentPuzzle === 5) checkAnswer5();
-            }
-        });
+      });
     </script>
-</body>
+  </body>
 </html>
