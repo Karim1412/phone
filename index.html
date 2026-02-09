@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guardian Phone - 1996 Secret</title>
+    <title>Guardian Phone - 1996 Gate</title>
     <style>
         * {
             margin: 0;
@@ -159,376 +159,6 @@
             font-style: italic;
         }
 
-        /* Vintage 1996 Screen */
-        .vintage-screen {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #00d4ff 0%, #ff00ff 50%, #ffff00 100%);
-            display: none;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vintage-screen.active {
-            display: flex;
-        }
-
-        /* CRT Monitor Effect */
-        .crt-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 0, 0, 0.15) 0px,
-                    rgba(0, 0, 0, 0.15) 1px,
-                    transparent 1px,
-                    transparent 2px
-                );
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .vintage-border-top {
-            background: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0000);
-            padding: 3px;
-            border-bottom: 4px dotted #000;
-        }
-
-        .vintage-border-bottom {
-            background: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0000);
-            padding: 3px;
-            border-top: 4px dotted #000;
-        }
-
-        .vintage-header {
-            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 50%, #ffff00 100%);
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom: 8px double #000;
-            position: relative;
-            z-index: 1;
-            box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .vintage-header::before {
-            content: '★═══════════════════★';
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 10px;
-            color: #000;
-            font-weight: bold;
-        }
-
-        .vintage-header::after {
-            content: '★═══════════════════★';
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 10px;
-            color: #000;
-            font-weight: bold;
-        }
-
-        .vintage-logo {
-            font-size: 48px;
-            margin-bottom: 10px;
-            animation: rotate3d 4s ease-in-out infinite;
-            text-shadow: 3px 3px 0 #000;
-        }
-
-        @keyframes rotate3d {
-            0%, 100% { transform: perspective(500px) rotateY(0deg); }
-            50% { transform: perspective(500px) rotateY(10deg); }
-        }
-
-        .vintage-title {
-            font-size: 36px;
-            font-weight: bold;
-            color: #000;
-            text-shadow: 
-                3px 3px 0px #fff, 
-                6px 6px 0px rgba(255, 0, 255, 0.6),
-                9px 9px 0px rgba(0, 255, 255, 0.6);
-            animation: rainbow-text 4s infinite;
-            letter-spacing: 4px;
-            font-family: 'Impact', 'Comic Sans MS', cursive;
-            margin: 10px 0;
-        }
-
-        @keyframes rainbow-text {
-            0% { color: #ff0000; }
-            16% { color: #ff8800; }
-            33% { color: #ffff00; }
-            50% { color: #00ff00; }
-            66% { color: #0088ff; }
-            83% { color: #8800ff; }
-            100% { color: #ff0000; }
-        }
-
-        .vintage-subtitle {
-            font-size: 20px;
-            color: #000;
-            margin-top: 15px;
-            font-weight: bold;
-            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0, 0, 0, 0.3);
-            font-family: 'Comic Sans MS', cursive;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 8px 15px;
-            border-radius: 10px;
-            display: inline-block;
-            border: 3px solid #000;
-        }
-
-        .vintage-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px 20px;
-            position: relative;
-            z-index: 1;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255, 0, 255, 0.3), transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(0, 255, 255, 0.3), transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 0, 0.2), transparent 50%),
-                linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 255, 0.95) 100%);
-        }
-
-        /* Retro Decorations */
-        .retro-stars {
-            position: absolute;
-            font-size: 35px;
-            animation: twinkle 2s infinite;
-            filter: drop-shadow(0 0 5px currentColor);
-        }
-
-        .star1 { top: 8%; left: 8%; color: #ff00ff; animation-delay: 0s; }
-        .star2 { top: 15%; right: 10%; color: #00ffff; animation-delay: 0.5s; }
-        .star3 { bottom: 12%; left: 12%; color: #ffff00; animation-delay: 1s; }
-        .star4 { bottom: 20%; right: 8%; color: #ff0088; animation-delay: 1.5s; }
-
-        @keyframes twinkle {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-            50% { transform: scale(1.4) rotate(180deg); opacity: 0.6; }
-        }
-
-        .geometric-shapes {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            border: 5px solid;
-            animation: float-spin 5s ease-in-out infinite;
-        }
-
-        .shape1 {
-            top: 5%;
-            right: 5%;
-            border-color: #ff00ff;
-            background: rgba(255, 0, 255, 0.2);
-            transform: rotate(45deg);
-            animation-delay: 0s;
-        }
-
-        .shape2 {
-            bottom: 8%;
-            left: 5%;
-            border-color: #00ffff;
-            background: rgba(0, 255, 255, 0.2);
-            border-radius: 50%;
-            animation-delay: 1.5s;
-        }
-
-        .shape3 {
-            top: 45%;
-            left: 3%;
-            width: 0;
-            height: 0;
-            border-left: 25px solid transparent;
-            border-right: 25px solid transparent;
-            border-bottom: 45px solid rgba(255, 255, 0, 0.6);
-            animation-delay: 3s;
-        }
-
-        @keyframes float-spin {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        .vintage-person {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
-            border-radius: 50%;
-            margin-bottom: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 90px;
-            border: 8px solid #000;
-            box-shadow: 
-                0 0 0 4px #fff,
-                0 0 0 8px #000,
-                0 0 20px rgba(255, 0, 255, 0.6),
-                0 0 40px rgba(0, 255, 255, 0.4),
-                0 20px 40px rgba(0, 0, 0, 0.4);
-            animation: float-avatar 3s ease-in-out infinite;
-            position: relative;
-        }
-
-        @keyframes float-avatar {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-
-        .vintage-person::before {
-            content: '✦';
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            font-size: 40px;
-            color: #ffff00;
-            animation: spin-sparkle 4s linear infinite;
-            filter: drop-shadow(0 0 10px #ffff00);
-        }
-
-        .vintage-person::after {
-            content: '✦';
-            position: absolute;
-            bottom: -20px;
-            right: -20px;
-            font-size: 40px;
-            color: #ff00ff;
-            animation: spin-sparkle 4s linear infinite reverse;
-            filter: drop-shadow(0 0 10px #ff00ff);
-        }
-
-        @keyframes spin-sparkle {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .vintage-message {
-            background: #fff;
-            border: 8px solid #000;
-            padding: 30px 35px;
-            border-radius: 30px;
-            position: relative;
-            box-shadow: 
-                6px 6px 0px rgba(255, 0, 255, 0.6),
-                12px 12px 0px rgba(0, 255, 255, 0.6),
-                18px 18px 0px rgba(255, 255, 0, 0.4);
-            max-width: 300px;
-        }
-
-        .vintage-message::before {
-            content: '';
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 25px solid transparent;
-            border-right: 25px solid transparent;
-            border-bottom: 30px solid #000;
-        }
-
-        .vintage-message::after {
-            content: '';
-            position: absolute;
-            top: -18px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 18px solid transparent;
-            border-right: 18px solid transparent;
-            border-bottom: 22px solid #fff;
-        }
-
-        .vintage-text {
-            font-size: 24px;
-            color: #000;
-            text-align: center;
-            line-height: 1.8;
-            font-weight: bold;
-            font-family: 'Comic Sans MS', 'Arial', cursive;
-            text-shadow: 2px 2px 0px rgba(255, 0, 255, 0.2);
-        }
-
-        .secret-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff00ff, #ff0088);
-            color: #fff;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-size: 18px;
-            margin-top: 20px;
-            border: 4px solid #000;
-            animation: pulse-badge 1.5s infinite;
-            font-weight: bold;
-            box-shadow: 
-                3px 3px 0px rgba(0, 0, 0, 0.4),
-                0 0 20px rgba(255, 0, 255, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        @keyframes pulse-badge {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .location-banner {
-            background: linear-gradient(90deg, #ffff00, #00ffff, #ff00ff);
-            border: 5px solid #000;
-            padding: 20px;
-            margin-top: 25px;
-            border-radius: 15px;
-            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
-        }
-
-        .location-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 10px;
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .location-info {
-            font-size: 28px;
-            font-weight: bold;
-            color: #000;
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            text-shadow: 3px 3px 0px #fff, 5px 5px 0px rgba(0, 0, 0, 0.3);
-            letter-spacing: 3px;
-        }
-
-        .vintage-footer {
-            background: #000;
-            color: #00ff00;
-            padding: 25px;
-            text-align: center;
-            font-size: 16px;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-            border-top: 5px double #00ff00;
-        }
-
         .hidden {
             display: none;
         }
@@ -538,6 +168,313 @@
             text-align: center;
             margin-bottom: 15px;
             font-size: 13px;
+        }
+
+        /* ========================================
+           VINTAGE 1996 WINDOWS 95 STYLE INTERFACE
+           ======================================== */
+        
+        .vintage-screen {
+            width: 100%;
+            height: 100%;
+            background: #008080;
+            display: none;
+            flex-direction: column;
+            position: relative;
+            font-family: 'MS Sans Serif', 'Arial', sans-serif;
+        }
+
+        .vintage-screen.active {
+            display: flex;
+        }
+
+        /* Windows 95 Window */
+        .win95-window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 340px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Title Bar */
+        .win95-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .win95-title {
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: bold;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .win95-icon {
+            width: 16px;
+            height: 16px;
+            background: #ffff00;
+            border: 1px solid #000;
+        }
+
+        .win95-buttons {
+            display: flex;
+            gap: 2px;
+        }
+
+        .win95-btn {
+            width: 16px;
+            height: 14px;
+            background: #c0c0c0;
+            border: 1px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Menu Bar */
+        .win95-menubar {
+            background: #c0c0c0;
+            border-bottom: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 2px 5px;
+            font-size: 11px;
+        }
+
+        /* Content Area */
+        .win95-content {
+            background: #ffffff;
+            padding: 25px 20px;
+            min-height: 400px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        /* Main Welcome Message */
+        .welcome-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #000080;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0 #ff00ff, 4px 4px 0 #00ffff;
+            font-family: 'Comic Sans MS', cursive;
+            animation: color-shift 3s infinite;
+        }
+
+        @keyframes color-shift {
+            0%, 100% { color: #000080; }
+            33% { color: #800080; }
+            66% { color: #008080; }
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .gate-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffff00, #ff00ff);
+            border: 3px solid #000080;
+            padding: 10px 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            margin: 20px 0;
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+            animation: blink-badge 1s infinite;
+        }
+
+        @keyframes blink-badge {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.7; }
+        }
+
+        /* Instructions Box */
+        .instruction-box {
+            background: #ffffcc;
+            border: 2px solid #000080;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .instruction-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 15px;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .instruction-text {
+            font-size: 16px;
+            color: #000;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .location-highlight {
+            background: #00ff00;
+            padding: 15px;
+            border: 3px solid #000;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .location-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: #000;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .school-name {
+            font-size: 20px;
+            color: #0000ff;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        /* Secret Message */
+        .secret-box {
+            background: #ff00ff;
+            border: 3px dashed #ffff00;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .secret-text {
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #000;
+            font-style: italic;
+        }
+
+        /* Animated Elements */
+        .retro-gif {
+            width: 80px;
+            height: 80px;
+            margin: 15px auto;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: 3px solid #000;
+            animation: spin-3d 3s linear infinite;
+            position: relative;
+        }
+
+        @keyframes spin-3d {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .retro-gif::before {
+            content: '★';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: #ffff00;
+        }
+
+        /* Decorative Elements */
+        .decoration-strip {
+            background: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            height: 8px;
+            margin: 15px 0;
+            animation: slide-bg 2s linear infinite;
+            background-size: 200% 100%;
+        }
+
+        @keyframes slide-bg {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Status Bar */
+        .win95-statusbar {
+            background: #c0c0c0;
+            border-top: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            padding: 5px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .status-panel {
+            border: 1px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 2px 8px;
+            font-size: 11px;
+            flex: 1;
+        }
+
+        /* Background Pattern */
+        .vintage-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            pointer-events: none;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 10px, #000 10px, #000 20px),
+                repeating-linear-gradient(-45deg, transparent, transparent 10px, #000 10px, #000 20px);
+        }
+
+        /* Animated Stars */
+        .bg-stars {
+            position: absolute;
+            font-size: 24px;
+            animation: float-star 4s ease-in-out infinite;
+        }
+
+        .star-1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .star-2 { top: 20%; right: 15%; animation-delay: 1s; }
+        .star-3 { bottom: 20%; left: 15%; animation-delay: 2s; }
+        .star-4 { bottom: 30%; right: 10%; animation-delay: 3s; }
+
+        @keyframes float-star {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.2); }
+        }
+
+        .arrow-pointer {
+            display: inline-block;
+            color: #ff0000;
+            font-size: 24px;
+            animation: bounce-arrow 1s infinite;
+        }
+
+        @keyframes bounce-arrow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
         }
     </style>
 </head>
@@ -613,52 +550,90 @@
                 </div>
             </div>
 
-            <!-- Vintage 1996 Screen -->
+            <!-- Vintage 1996 Windows 95 Style Screen -->
             <div class="vintage-screen" id="vintageScreen">
-                <div class="crt-effect"></div>
-                <div class="vintage-border-top"></div>
+                <div class="vintage-bg-pattern"></div>
                 
-                <div class="vintage-header">
-                    <div class="vintage-logo">💎</div>
-                    <div class="vintage-title">WELCOME TO 1996</div>
-                    <div class="vintage-subtitle">🌟 THE DIGITAL TIME PORTAL 🌟</div>
-                </div>
-                
-                <div class="vintage-content">
-                    <!-- Retro Decorative Elements -->
-                    <div class="retro-stars star1">⭐</div>
-                    <div class="retro-stars star2">✨</div>
-                    <div class="retro-stars star3">💫</div>
-                    <div class="retro-stars star4">🌟</div>
-                    
-                    <div class="geometric-shapes shape1"></div>
-                    <div class="geometric-shapes shape2"></div>
-                    <div class="geometric-shapes shape3"></div>
-                    
-                    <div class="vintage-person">👤</div>
-                    
-                    <div class="vintage-message">
-                        <div class="vintage-text">
-                            "Don't tell others<br>
-                            it's a secret"
-                            <div class="secret-badge">🤫 TOP SECRET</div>
+                <!-- Background Animated Stars -->
+                <div class="bg-stars star-1">⭐</div>
+                <div class="bg-stars star-2">✨</div>
+                <div class="bg-stars star-3">💫</div>
+                <div class="bg-stars star-4">🌟</div>
+
+                <!-- Windows 95 Window -->
+                <div class="win95-window">
+                    <!-- Title Bar -->
+                    <div class="win95-titlebar">
+                        <div class="win95-title">
+                            <div class="win95-icon"></div>
+                            Secret Message - 1996
+                        </div>
+                        <div class="win95-buttons">
+                            <div class="win95-btn">_</div>
+                            <div class="win95-btn">□</div>
+                            <div class="win95-btn">×</div>
                         </div>
                     </div>
 
-                    <div class="location-banner">
-                        <div class="location-title">📍 Secret Location</div>
-                        <div class="location-info">ÉTAGE 4</div>
-                        <div class="location-title" style="margin-top: 5px;">Digital School</div>
+                    <!-- Menu Bar -->
+                    <div class="win95-menubar">
+                        File &nbsp; Edit &nbsp; View &nbsp; Help
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="win95-content">
+                        <!-- Welcome Header -->
+                        <div class="welcome-header">
+                            <div class="welcome-title">
+                                ★ WELCOME TO ★<br>
+                                THE GATE OF 1996
+                            </div>
+                            <div class="retro-gif"></div>
+                            <div class="gate-badge">🚪 1996 PORTAL 🚪</div>
+                        </div>
+
+                        <div class="decoration-strip"></div>
+
+                        <!-- Instructions -->
+                        <div class="instruction-box">
+                            <div class="instruction-title">📍 YOUR MISSION:</div>
+                            <div class="instruction-text">
+                                <span class="arrow-pointer">➤</span> Go to:
+                            </div>
+                            
+                            <div class="location-highlight">
+                                <div class="location-text">ÉTAGE 4</div>
+                                <div class="school-name">EPI DIGITAL SCHOOL</div>
+                            </div>
+
+                            <div class="instruction-text" style="text-align: center; margin-top: 15px;">
+                                ⚠️ This is your destination! ⚠️
+                            </div>
+                        </div>
+
+                        <div class="decoration-strip"></div>
+
+                        <!-- Secret Message -->
+                        <div class="secret-box">
+                            <div class="secret-text">
+                                🤫 "Don't tell others<br>
+                                it's a secret" 🤫
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #808080;">
+                            <marquee behavior="scroll" scrollamount="3">
+                                ★ Welcome to the digital time portal! ★ You have been granted special access ★
+                            </marquee>
+                        </div>
+                    </div>
+
+                    <!-- Status Bar -->
+                    <div class="win95-statusbar">
+                        <div class="status-panel">Ready</div>
+                        <div class="status-panel">Access: GRANTED</div>
                     </div>
                 </div>
-                
-                <div class="vintage-footer">
-                    ⚡ GUARDIAN PHONE SYSTEM v1.996 ⚡<br>
-                    ╔═══════════════════════════╗<br>
-                    ║ AUTHORIZED ACCESS GRANTED ║<br>
-                    ╚═══════════════════════════╝
-                </div>
-                <div class="vintage-border-bottom"></div>
             </div>
         </div>
     </div>
