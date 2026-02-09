@@ -92,6 +92,51 @@
             line-height: 1.6;
         }
 
+        .visual-puzzle {
+            background: #000;
+            border: 2px solid #4ade80;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        .symbol-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .symbol-cell {
+            background: #1a1a3e;
+            border: 2px solid #4ade80;
+            padding: 15px;
+            font-size: 24px;
+            border-radius: 8px;
+        }
+
+        .color-code {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .color-box {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
         .puzzle-input {
             width: 100%;
             padding: 10px;
@@ -168,6 +213,13 @@
             text-align: center;
             margin-bottom: 15px;
             font-size: 13px;
+        }
+
+        .matrix-text {
+            color: #4ade80;
+            font-size: 16px;
+            line-height: 1.8;
+            letter-spacing: 2px;
         }
 
         /* ========================================
@@ -486,67 +538,120 @@
                 <div class="lock-header">
                     <div class="lock-icon">🔒</div>
                     <h2 style="color: #4ade80; margin-bottom: 20px; font-size: 22px;">Guardian Phone</h2>
-                    <div class="puzzle-progress" id="progress">Challenge <span id="currentPuzzle">1</span> of 4</div>
+                    <div class="puzzle-progress" id="progress">Challenge <span id="currentPuzzle">1</span> of 5</div>
                 </div>
 
-                <!-- Puzzle 1: Binary Cipher -->
+                <!-- Puzzle 1: Visual Pattern Recognition -->
                 <div class="puzzle-container" id="puzzle1">
-                    <div class="puzzle-title">🔐 Challenge 1: The Binary Message</div>
+                    <div class="puzzle-title">🎨 Challenge 1: The Color Cipher</div>
                     <div class="puzzle-question">
-                        Decode this binary sequence:<br>
-                        <strong style="color: #4ade80;">01000111 01000001 01010100 01000101</strong><br>
-                        What word does it spell?
+                        Each color represents a letter. Decode the word:<br>
+                        <small style="color: #888;">Red=G, Blue=A, Green=T, Yellow=E</small>
                     </div>
-                    <input type="text" class="puzzle-input" id="answer1" placeholder="Enter decoded word...">
+                    <div class="color-code">
+                        <div class="color-box" style="background: #ff0000;">R</div>
+                        <div class="color-box" style="background: #0000ff;">B</div>
+                        <div class="color-box" style="background: #00ff00;">G</div>
+                        <div class="color-box" style="background: #ffff00;">Y</div>
+                    </div>
+                    <div class="puzzle-question" style="margin-top: 15px;">
+                        Look at the first letter of each color name in the boxes above.<br>
+                        What 4-letter word do they spell?
+                    </div>
+                    <input type="text" class="puzzle-input" id="answer1" placeholder="Enter the 4-letter word...">
                     <button class="submit-btn" onclick="checkAnswer1()">Decode</button>
                     <button class="hint-btn" onclick="showHint1()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint1">💡 Binary to ASCII: Each 8-bit sequence represents a letter</div>
+                    <div class="hint-text hidden" id="hint1">💡 Read the first letter of: Red, Blue, Green, Yellow</div>
                     <div class="error-msg" id="error1"></div>
                 </div>
 
-                <!-- Puzzle 2: Mathematical Sequence -->
+                <!-- Puzzle 2: Symbol Math -->
                 <div class="puzzle-container hidden" id="puzzle2">
-                    <div class="puzzle-title">🔢 Challenge 2: The Fibonacci Floor</div>
+                    <div class="puzzle-title">🔣 Challenge 2: Symbol Mathematics</div>
                     <div class="puzzle-question">
-                        Find the missing number in this famous sequence:<br>
-                        <strong style="color: #4ade80;">0, 1, 1, 2, 3, ?, 8, 13</strong><br>
-                        This number reveals the floor you seek.
+                        If ★ + ★ = 6, and ♦ × 2 = 8, and ● - 1 = 2<br>
+                        What is ★ + ♦ + ● - 5 = ?
                     </div>
-                    <input type="text" class="puzzle-input" id="answer2" placeholder="What's the missing number?">
+                    <div class="visual-puzzle">
+                        <div style="color: #4ade80; font-size: 20px; margin: 10px 0;">
+                            ★ + ★ = 6<br>
+                            ♦ × 2 = 8<br>
+                            ● - 1 = 2<br>
+                            <div style="border-top: 2px solid #4ade80; margin: 15px 0; padding-top: 15px;">
+                                ★ + ♦ + ● - 5 = ?
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" class="puzzle-input" id="answer2" placeholder="Enter the number...">
                     <button class="submit-btn" onclick="checkAnswer2()">Calculate</button>
                     <button class="hint-btn" onclick="showHint2()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint2">💡 Each number is the sum of the two before it</div>
+                    <div class="hint-text hidden" id="hint2">💡 First find each symbol's value: ★=3, ♦=4, ●=3, then add them up and subtract 5</div>
                     <div class="error-msg" id="error2"></div>
                 </div>
 
-                <!-- Puzzle 3: Caesar Cipher -->
+                <!-- Puzzle 3: Reverse Alphabetical Cipher -->
                 <div class="puzzle-container hidden" id="puzzle3">
-                    <div class="puzzle-title">📜 Challenge 3: The Shifted Truth</div>
+                    <div class="puzzle-title">🔄 Challenge 3: The Mirror Alphabet</div>
                     <div class="puzzle-question">
-                        Decipher this message (shifted by 4):<br>
-                        <strong style="color: #4ade80;">HMKMXEP WGLSSP</strong><br>
-                        Two words, no space between them.
+                        In the mirror alphabet, A↔Z, B↔Y, C↔X, etc.<br>
+                        Decode this message:
                     </div>
-                    <input type="text" class="puzzle-input" id="answer3" placeholder="Decrypt the message...">
+                    <div class="visual-puzzle">
+                        <div class="matrix-text">
+                            WRTRGZO HXSLLO
+                        </div>
+                    </div>
+                    <div class="puzzle-question" style="font-size: 11px; margin-top: 10px;">
+                        (Two words, write them together with no space)
+                    </div>
+                    <input type="text" class="puzzle-input" id="answer3" placeholder="Decode the mirror text...">
                     <button class="submit-btn" onclick="checkAnswer3()">Decrypt</button>
                     <button class="hint-btn" onclick="showHint3()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint3">💡 Caesar cipher: shift each letter back 4 positions (H→D, M→I, etc.)</div>
+                    <div class="hint-text hidden" id="hint3">💡 W↔D, R↔I, T↔G, etc. Replace each letter with its opposite in the alphabet</div>
                     <div class="error-msg" id="error3"></div>
                 </div>
 
-                <!-- Puzzle 4: Year Calculation -->
+                <!-- Puzzle 4: Pattern Sequence -->
                 <div class="puzzle-container hidden" id="puzzle4">
-                    <div class="puzzle-title">🕰️ Challenge 4: The Vintage Year</div>
+                    <div class="puzzle-title">🧮 Challenge 4: The Hidden Pattern</div>
                     <div class="puzzle-question">
-                        Solve this equation to find the year:<br>
-                        <strong style="color: #4ade80;">(50 × 40) - 4 = ?</strong><br>
-                        This year holds the secret gateway.
+                        Look at this sequence carefully:
                     </div>
-                    <input type="text" class="puzzle-input" id="answer4" placeholder="Calculate the year...">
+                    <div class="visual-puzzle">
+                        <div class="matrix-text" style="font-size: 18px; letter-spacing: 4px;">
+                            2, 3, 5, 7, 11, 13, 17, ?
+                        </div>
+                    </div>
+                    <div class="puzzle-question" style="margin-top: 10px;">
+                        What comes next? This number reveals a special floor.
+                    </div>
+                    <input type="text" class="puzzle-input" id="answer4" placeholder="What's the next number?">
                     <button class="submit-btn" onclick="checkAnswer4()">Submit</button>
                     <button class="hint-btn" onclick="showHint4()">Need a hint?</button>
-                    <div class="hint-text hidden" id="hint4">💡 Multiply first, then subtract. This is a year in the 1990s.</div>
+                    <div class="hint-text hidden" id="hint4">💡 These are prime numbers (only divisible by 1 and themselves)</div>
                     <div class="error-msg" id="error4"></div>
+                </div>
+
+                <!-- Puzzle 5: Historical Event -->
+                <div class="puzzle-container hidden" id="puzzle5">
+                    <div class="puzzle-title">🎮 Challenge 5: The Gaming Revolution</div>
+                    <div class="puzzle-question">
+                        A legendary gaming console was released that changed everything.<br>
+                        It brought 3D gaming to the masses and was created by a Japanese company.<br>
+                        <br>
+                        <strong style="color: #4ade80;">Clues:</strong><br>
+                        • Famous game: "Super M____ 64"<br>
+                        • Company rhymes with "Intended"<br>
+                        • Had a controller with a joystick in the middle<br>
+                        • Competitors: Sony PlayStation & Sega Saturn<br>
+                        <br>
+                        In what year was this revolutionary console launched in North America?
+                    </div>
+                    <input type="text" class="puzzle-input" id="answer5" placeholder="Enter the year (4 digits)...">
+                    <button class="submit-btn" onclick="checkAnswer5()">Submit</button>
+                    <button class="hint-btn" onclick="showHint5()">Need a hint?</button>
+                    <div class="hint-text hidden" id="hint5">💡 Think about the Nintendo 64. It was released in the mid-1990s...</div>
+                    <div class="error-msg" id="error5"></div>
                 </div>
             </div>
 
@@ -657,13 +762,17 @@
             document.getElementById('hint4').classList.remove('hidden');
         }
 
+        function showHint5() {
+            document.getElementById('hint5').classList.remove('hidden');
+        }
+
         function checkAnswer1() {
             const answer = document.getElementById('answer1').value.trim().toUpperCase();
             const errorMsg = document.getElementById('error1');
             
-            if (answer === 'GATE') {
+            if (answer === 'RBGY') {
                 errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ Binary decoded! Proceeding to next challenge...';
+                errorMsg.textContent = '✓ Color cipher decoded! Moving to next challenge...';
                 setTimeout(() => {
                     document.getElementById('puzzle1').classList.add('hidden');
                     document.getElementById('puzzle2').classList.remove('hidden');
@@ -672,7 +781,7 @@
                 }, 1500);
             } else {
                 errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Incorrect. Remember: 8 bits = 1 letter (ASCII)';
+                errorMsg.textContent = '✗ Wrong! Look at the FIRST LETTER of each color name in the boxes.';
             }
         }
 
@@ -680,9 +789,11 @@
             const answer = document.getElementById('answer2').value.trim();
             const errorMsg = document.getElementById('error2');
             
+            // ★ = 3, ♦ = 4, ● = 3
+            // 3 + 4 + 3 - 5 = 5
             if (answer === '5') {
                 errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ Fibonacci sequence solved! Accessing next level...';
+                errorMsg.textContent = '✓ Symbol math solved! Advancing...';
                 setTimeout(() => {
                     document.getElementById('puzzle2').classList.add('hidden');
                     document.getElementById('puzzle3').classList.remove('hidden');
@@ -691,7 +802,7 @@
                 }, 1500);
             } else {
                 errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Wrong number! Think: 2 + 3 = ?';
+                errorMsg.textContent = '✗ Incorrect! Calculate each symbol first, then solve the equation.';
             }
         }
 
@@ -699,9 +810,10 @@
             const answer = document.getElementById('answer3').value.trim().toLowerCase();
             const errorMsg = document.getElementById('error3');
             
+            // WRTRGZO HXSLLO -> DIGITAL SCHOOL (Atbash cipher: A=Z, B=Y, etc.)
             if (answer === 'digitalschool') {
                 errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ Caesar cipher cracked! Final challenge loading...';
+                errorMsg.textContent = '✓ Mirror alphabet cracked! Next level unlocking...';
                 setTimeout(() => {
                     document.getElementById('puzzle3').classList.add('hidden');
                     document.getElementById('puzzle4').classList.remove('hidden');
@@ -710,7 +822,7 @@
                 }, 1500);
             } else {
                 errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Decryption failed! Shift back 4 letters: H→D, M→I...';
+                errorMsg.textContent = '✗ Not quite! Remember: A↔Z, B↔Y, C↔X... apply this to every letter.';
             }
         }
 
@@ -718,16 +830,37 @@
             const answer = document.getElementById('answer4').value.trim();
             const errorMsg = document.getElementById('error4');
             
+            // Prime number sequence: next is 19
+            if (answer === '19') {
+                errorMsg.className = 'success-msg';
+                errorMsg.textContent = '✓ Pattern recognized! Final challenge loading...';
+                setTimeout(() => {
+                    document.getElementById('puzzle4').classList.add('hidden');
+                    document.getElementById('puzzle5').classList.remove('hidden');
+                    currentPuzzle = 5;
+                    document.getElementById('currentPuzzle').textContent = '5';
+                }, 1500);
+            } else {
+                errorMsg.className = 'error-msg';
+                errorMsg.textContent = '✗ Wrong number! These are prime numbers... what\'s the next one?';
+            }
+        }
+
+        function checkAnswer5() {
+            const answer = document.getElementById('answer5').value.trim();
+            const errorMsg = document.getElementById('error5');
+            
+            // Nintendo 64 was released in North America in 1996
             if (answer === '1996') {
                 errorMsg.className = 'success-msg';
-                errorMsg.textContent = '✓ ALL CHALLENGES COMPLETE! Opening portal to 1996...';
+                errorMsg.textContent = '✓ CORRECT! The Nintendo 64 launched in 1996! Opening portal...';
                 setTimeout(() => {
                     document.getElementById('lockScreen').style.display = 'none';
                     document.getElementById('vintageScreen').classList.add('active');
                 }, 2000);
             } else {
                 errorMsg.className = 'error-msg';
-                errorMsg.textContent = '✗ Wrong calculation! Try: 50 × 40 = 2000, then 2000 - 4 = ?';
+                errorMsg.textContent = '✗ Wrong year! Think about when the N64 came to North America...';
             }
         }
 
@@ -738,6 +871,7 @@
                 else if (currentPuzzle === 2) checkAnswer2();
                 else if (currentPuzzle === 3) checkAnswer3();
                 else if (currentPuzzle === 4) checkAnswer4();
+                else if (currentPuzzle === 5) checkAnswer5();
             }
         });
     </script>
